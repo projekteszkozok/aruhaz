@@ -1,5 +1,6 @@
 package hu.elte.pt.store.logic;
 
+import hu.elte.pt.store.logic.controllers.CategoryController;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,6 +16,8 @@ public class DataSource {
     private final StoreConfiguration config;
     private static final Logger log = Logger.getLogger(DataSource.class);
     
+    private final CategoryController categoryController;
+    
     private DataSource(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("store-config.xml");
         config = (StoreConfiguration) context.getBean("StoreConfiguration");
@@ -25,11 +28,15 @@ public class DataSource {
                 .append(" , PASSWORD: ").append(config.getPassword()).append("]");
         log.info(logMessageBuilder.toString());
         
-        //Kontroller példányok létrehozása 
+        categoryController = new CategoryController(); 
     }
     
     public Connection getConnection() throws SQLException{
         return DriverManager.getConnection(config.getConnectionString(), config.getUserName(), config.getPassword());
+    }
+
+    public CategoryController getCategoryController() {
+        return categoryController;
     }
     
     public static DataSource getInstance(){
