@@ -120,7 +120,7 @@ public class CategoryController implements EntityController<Category>{
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM CATEGORY");) {
             resultSet.absolute(rowIndex + 1);
             resultSet.deleteRow();
-            log.info("A kiválaswztott [ "+ rowIndex+ " ] sorindex-ű elem törlése sikeres volt");
+            log.info("A kiválasztott [ "+ rowIndex+ " ] sorindex-ű elem törlése sikeres volt");
         } catch (SQLException ex) {
             log.error("A kiválasztott [ "+ rowIndex+ " ] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg! ", ex);
             throw new SQLException("A kiválasztott [ "+ rowIndex+ " ] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg!");
