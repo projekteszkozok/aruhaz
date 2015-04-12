@@ -42,8 +42,8 @@ public class StoreFrame extends JFrame{
         try {
             DataSource.getInstance().getConnection().close();
         } catch (SQLException ex) {
-            log.error("Az adatbáziskapcsolat létrehozása során kivétel lépett fel!");
-            showError("Az adatbáziskapcsolat létrehozása során kivétel lépett fel!");
+            log.error("Az adatbáziskapcsolat létrehozása során kivétel lépett fel!", ex);
+            showError(ex.getMessage());
             System.exit(1);        
         }
         
