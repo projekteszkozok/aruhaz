@@ -26,6 +26,7 @@ public class CategoryController implements EntityController<Category>{
             resultSet.next();
             category.setCategoryId(resultSet.getInt(1));
             category.setName(resultSet.getString(2));
+            log.info("A táblában az azonosító alapján történő keresés sikeres volt. ResultSet: "+ resultSet.getInt(1) + " " + resultSet.getString(2));
         } catch (SQLException ex) {
             log.error("A táblában az ["+ entityId +"] azonosító alapján történő keresés során kivétel keletkezett", ex);
             throw new SQLException("A táblában az ["+ entityId +"] azonosító alapján történő keresés sikertelen volt");
@@ -43,6 +44,7 @@ public class CategoryController implements EntityController<Category>{
             resultSet.absolute(rowIndex + 1);
             category.setCategoryId(resultSet.getInt(1));
             category.setName(resultSet.getString(2));
+            log.info("A táblában a sorindex alapján történő keresés sikeres volt. ResultSet: "+ resultSet.getInt(1) + " " + resultSet.getString(2));
         } catch (SQLException ex) {
             log.error("A táblában a sorindex alapján történő keresés során kivétel keletkezett! ", ex);
             throw new SQLException("A táblában a sorindex alapján történő keresés sikertelen volt!");
@@ -59,6 +61,7 @@ public class CategoryController implements EntityController<Category>{
                 ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS CNT FROM CATEGORY");) {
             resultSet.next();
             categoryCount = resultSet.getInt("CNT");
+            log.debug("A táblában fellelhető sorok számlálása sikeresen lezajlott " + categoryCount + " értékkel.");
         } catch (SQLException ex) {
             log.error("A táblában fellelhető sorok számlálásának lekérdezése során kivétel keletkezett! ", ex);
             throw new SQLException("A táblában fellelhető sorok számlálásának lekérdezése során kivétel keletkezett!");
@@ -75,9 +78,10 @@ public class CategoryController implements EntityController<Category>{
             resultSet.next();
             resultSet.updateString("NAME", entity.getName());
             resultSet.updateRow();
+            log.info("A sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
         } catch (SQLException ex) {
-            log.error("A táblában található" + entity.getCategoryId() + "-val rendelkező sor módosítása során kivétel keletkezett!",ex);
-            throw new SQLException("A táblában található" + entity.getCategoryId() + "-val rendelkező sor módosítása sikertelen volt!");
+            log.error("A táblában található" + entity.getCategoryId() + " azonosíítóval rendelkező sor módosítása során kivétel keletkezett!",ex);
+            throw new SQLException("A táblában található" + entity.getCategoryId() + " azonosíítóval rendelkező sor módosítása sikertelen volt!");
         }
     }
 
@@ -93,6 +97,7 @@ public class CategoryController implements EntityController<Category>{
             resultSet.updateInt("CATEGORY_ID", id);
             resultSet.updateString("NAME", title);
             resultSet.insertRow();
+            log.info("Az új sor létrehozása sikeres volt.");
         } catch (SQLException ex) {
             log.error("A táblán történő új sor létrehozása során kivétel keletkezett! ", ex);
             throw new SQLException("Nem sikerült új sort létrehozni a táblában!");
@@ -115,7 +120,7 @@ public class CategoryController implements EntityController<Category>{
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM CATEGORY");) {
             resultSet.absolute(rowIndex + 1);
             resultSet.deleteRow();
-
+            log.info("A kiválaswztott [ "+ rowIndex+ " ] sorindex-ű elem törlése sikeres volt");
         } catch (SQLException ex) {
             log.error("A kiválasztott [ "+ rowIndex+ " ] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg! ", ex);
             throw new SQLException("A kiválasztott [ "+ rowIndex+ " ] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg!");
