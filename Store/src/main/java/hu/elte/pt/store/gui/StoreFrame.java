@@ -30,7 +30,7 @@ public class StoreFrame extends JFrame{
     
     private static final Logger log = Logger.getLogger(StoreFrame.class);
     
-    public static void showError(final String message){
+    public static void displayError(final String message){
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
@@ -43,7 +43,7 @@ public class StoreFrame extends JFrame{
             DataSource.getInstance().getConnection().close();
         } catch (SQLException ex) {
             log.error("Az adatbáziskapcsolat létrehozása során kivétel lépett fel!", ex);
-            showError(ex.getMessage());
+            displayError(ex.getMessage());
             System.exit(1);        
         }
         

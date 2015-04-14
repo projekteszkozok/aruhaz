@@ -2,6 +2,7 @@ package hu.elte.pt.store.logic.controllers;
 
 import hu.elte.pt.store.logic.entities.Entity;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Az entitásokhoz tartozó controller-ek megvalósítják ezt az interfészt.
@@ -35,9 +36,10 @@ interface EntityController <E extends Entity>{
     /**
      * Eljárás, melynek segítségével módosíthatunk az adatbázisban valamilyen adatot, a paraméterként megadott entitást felhasználva.
      * @param entity módosított entitás
+     * @param rowIndex a módosítani kívánt sor indexe a táblázatban
      * @throws SQLException sikertelen módosítás esetén kiváltodó kivétel.
      */
-    public void updateEntity(E entity) throws SQLException;
+    public void updateEntity(E entity, int rowIndex) throws SQLException;
     
     /**
      * Metódus, mely létrehoz egy új entitásnak megfelelő sort az adatbázisban és visszaadja, hogy melyik index-re lett beszúrva az adott adat.
@@ -52,4 +54,11 @@ interface EntityController <E extends Entity>{
      * @throws SQLException sikertelen törlés esetén kiváltódó kivétel.
      */
     public void deleteEntity(int rowIndex) throws SQLException;    
+    
+    /**
+     * Metódus, mely visszaadja az összes sort egy entitásokból álló listában az adatbázis-táblából.
+     * @return lista a tábla összes entitásáról
+     * @throws SQLException sikertelen adatbázisművelet esetén kiváltódó kivétel
+     */
+    public List<E> getEntities() throws SQLException;
 }

@@ -16,7 +16,7 @@ public class CategoryComboBoxModel extends DefaultComboBoxModel<Category>{
         try {
             return DataSource.getInstance().getCategoryController().getEntityCount();
         } catch (SQLException ex) {
-            StoreFrame.showError(ex.getMessage());
+            StoreFrame.displayError(ex.getMessage());
             return 0;
         }
     }
@@ -26,7 +26,7 @@ public class CategoryComboBoxModel extends DefaultComboBoxModel<Category>{
         try {
             return DataSource.getInstance().getCategoryController().getEntityByRowIndex(index);
         } catch (SQLException ex) {
-            StoreFrame.showError(ex.getMessage());
+            StoreFrame.displayError(ex.getMessage());
             return null;
         }
     }    

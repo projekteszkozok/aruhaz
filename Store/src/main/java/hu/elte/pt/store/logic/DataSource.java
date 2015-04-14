@@ -1,9 +1,13 @@
 package hu.elte.pt.store.logic;
 
 import hu.elte.pt.store.logic.controllers.CategoryController;
+import hu.elte.pt.store.logic.entities.Category;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -45,5 +49,36 @@ public class DataSource {
     
     private static class DataSourceHolder{
         private static final DataSource INSTANCE = new DataSource();
+    }
+    
+    public int obtainNewId() throws SQLException {
+        int id;
+        try (
+                Connection connection = getConnection();
+                Statement stmt = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                ResultSet rs = stmt.executeQuery("SELECT VALUUE FROM SEQ")) {
+            rs.next();
+            id = rs.getInt("VALUUE") + 1;
+            rs.updateInt("VALUUE", id);
+            rs.updateRow();
+        }
+        return id;
+    }    
+    
+    public List<Category> getCategories() throws SQLException {
+        return categoryController.getEntities();
+    }    
+    
+    public int addCategory() throws SQLException{
+        categoryController.addNewEntity();
+        return getCategories().size() - 1;
+    }
+    
+    public void deleteCategory(int index) throws SQLException{
+        categoryController.deleteEntity(index);
+    }
+    
+    public void updateCategory(final Category category, final int rowIndex) throws SQLException{
+        categoryController.updateEntity(category, rowIndex);
     }
 }
