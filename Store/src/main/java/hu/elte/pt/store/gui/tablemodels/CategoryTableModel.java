@@ -24,7 +24,7 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
     private final int refreshInterval;
     private final List<Category> categories;
     private final Timer refreshTimer;
-    final CellEditorListener cellEditorListener;
+    private final CellEditorListener cellEditorListener;
     
     public CategoryTableModel(){
         refreshInterval = 5 * 1000;
@@ -181,5 +181,10 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
         }
 
     }    
+
+    public CellEditorListener getCellEditorListener() {
+        return cellEditorListener;
+    }
+    
     
 }

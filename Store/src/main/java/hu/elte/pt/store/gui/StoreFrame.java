@@ -7,7 +7,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -20,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.TableColumn;
 import org.apache.log4j.Logger;
 
 /**
@@ -64,6 +67,15 @@ public class StoreFrame extends JFrame{
         categoryTable = new JTable(categoryTableModel);
         categoryTable.setAutoCreateRowSorter(true);
         categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        Enumeration<TableColumn> tableColumns = categoryTable.getColumnModel().getColumns();
+        while (tableColumns.hasMoreElements()) {
+            TableColumn tableColumn = tableColumns.nextElement();
+            if (tableColumn.getCellEditor() != null) {
+                tableColumn.getCellEditor().addCellEditorListener(categoryTableModel.getCellEditorListener());
+            }
+        }
+         
+     
         jTabbedPane.add("Kategória", new JScrollPane(categoryTable));
         
     }
