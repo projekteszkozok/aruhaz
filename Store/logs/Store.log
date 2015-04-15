@@ -1,3 +1,0 @@
-2015-04-14 21:34:34,301 [AWT-EventQueue-0] (DataSource.java:33) INFO - Az adatbázis konfiguráció az alábbi értékekkel betöltődött: [CONNECTION : jdbc:derby://localhost:1527/Store , USER: root , PASSWORD: root]
-2015-04-14 21:34:40,380 [SwingWorker-pool-1-thread-3] (CategoryController.java:85) INFO - A(z) (5) azonosítójú sor sikeresen módosult. Az új NAME: Pendrive6 lett.
-2015-04-14 21:34:44,395 [SwingWorker-pool-1-thread-5] (CategoryController.java:85) INFO - A(z) (5) azonosítójú sor sikeresen módosult. Az új NAME: Pendrive lett.
