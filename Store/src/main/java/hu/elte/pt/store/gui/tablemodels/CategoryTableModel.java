@@ -73,6 +73,7 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
     
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
+        refreshTimer.stop();
         return true;
     }
     
