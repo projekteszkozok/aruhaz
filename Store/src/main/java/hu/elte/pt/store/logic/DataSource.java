@@ -1,7 +1,9 @@
 package hu.elte.pt.store.logic;
 
 import hu.elte.pt.store.logic.controllers.CategoryController;
+import hu.elte.pt.store.logic.controllers.ManufacturerController;
 import hu.elte.pt.store.logic.entities.Category;
+import hu.elte.pt.store.logic.entities.Manufacturer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,6 +23,7 @@ public class DataSource {
     private static final Logger log = Logger.getLogger(DataSource.class);
     
     private final CategoryController categoryController;
+    private final ManufacturerController manufacturerController;
     
     private DataSource(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("store-config.xml");
@@ -33,6 +36,7 @@ public class DataSource {
         log.info(logMessageBuilder.toString());
         
         categoryController = new CategoryController(); 
+        manufacturerController = new ManufacturerController();
     }
     
     public Connection getConnection() throws SQLException{
@@ -41,6 +45,10 @@ public class DataSource {
 
     public CategoryController getCategoryController() {
         return categoryController;
+    }
+    
+    public ManufacturerController getManufacturerController() {
+        return manufacturerController;
     }
     
     public static DataSource getInstance(){
@@ -63,8 +71,9 @@ public class DataSource {
             rs.updateRow();
         }
         return id;
-    }    
+    }
     
+    //Category
     public List<Category> getCategories() throws SQLException {
         return categoryController.getEntities();
     }    
@@ -80,5 +89,23 @@ public class DataSource {
     
     public void updateCategory(final Category category, final int rowIndex) throws SQLException{
         categoryController.updateEntity(category, rowIndex);
+    }
+    
+    //Manufacturer
+    public List<Manufacturer> getManufacturers() throws SQLException {
+        return manufacturerController.getEntities();
+    }
+
+    public int addManufacturer() throws SQLException {
+        manufacturerController.addNewEntity();
+        return getManufacturers().size() - 1;
+    }
+
+    public void deleteManufacturer(int index) throws SQLException {
+        manufacturerController.deleteEntity(index);
+    }
+
+    public void updateManufacturer(final Manufacturer manufacturer, final int rowIndex) throws SQLException {
+        manufacturerController.updateEntity(manufacturer, rowIndex);
     }
 }
