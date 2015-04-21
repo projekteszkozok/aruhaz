@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hu.elte.pt.store.logic.entities;
 
 import java.util.Objects;
@@ -116,5 +111,4 @@ public class Manufacturer implements Entity {
     public String toString() {
         return "Manufacturer{" + "manufacturerId=" + manufacturerId + ", name=" + name + ", contactName=" + contactName + ", city=" + city + ", phone=" + phone + ", store=" + store + '}';
     }
-
 }

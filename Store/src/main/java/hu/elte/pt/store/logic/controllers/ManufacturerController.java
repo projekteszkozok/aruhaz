@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Manufacturer controller osztálya
+ *
  * @author Honti Dora
  */
 public class ManufacturerController implements EntityController<Manufacturer> {
@@ -107,7 +108,11 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.absolute(rowIndex + 1);
             resultSet.updateInt("MANUFACTURER_ID", entity.getManufacturerId());
             resultSet.updateString("NAME", entity.getName());
-            //TODO a többi adattagot is
+            resultSet.updateString("CONTACT_NAME", entity.getContactName());
+            resultSet.updateString("CITY", entity.getCity());
+            resultSet.updateString("PHONE", entity.getPhone());
+            resultSet.updateInt("STORE", entity.getStore());
+
             resultSet.updateRow();
             log.info("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
         } catch (SQLException ex) {
@@ -118,15 +123,17 @@ public class ManufacturerController implements EntityController<Manufacturer> {
 
     @Override
     public int addNewEntity() throws SQLException {
-        String title = "<new manufacturer>";
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
             resultSet.updateInt("MANUFACTURER_ID", DataSource.getInstance().obtainNewId());
-            resultSet.updateString("NAME", title);
-            //TODO a többi adattagot is
+            resultSet.updateString("NAME", "NAME");
+            resultSet.updateString("CONTACT_NAME", "CONTACT_NAME");
+            resultSet.updateString("CITY", "CITY");
+            resultSet.updateString("PHONE", "PHONE");
+            resultSet.updateInt("STORE", 0);
             resultSet.insertRow();
             log.info("Az új gyártó létrehozása sikeres volt.");
         } catch (SQLException ex) {
