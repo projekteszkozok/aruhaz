@@ -3,42 +3,48 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hu.elte.pt.store.logic.entities;
 
+import java.util.List;
+import java.util.Objects;
 
 /**
  *
  * @author Cseh Zoltán
  */
-
 public class Order implements Entity {
 
-
     private Integer orderID;
+    //private Product productsID;
     private Integer productID;
-    private Integer ordererID;
-    
+    private Customer ordererID;
 
-    public Integer getOrdererID() {
+
+    public Order(){ 
+    }
+    
+    public Order(Integer orderID){
+        this.orderID = orderID;
+    }
+    
+    //private List<Products> products;
+
+    public Customer getOrdererID() {
         return ordererID;
     }
 
-    public void setOrdererID(Integer ordererID) {
+    public void setOrdererID(Customer ordererID) {
         this.ordererID = ordererID;
     }
-
     
     public Integer getOrderID() {
         return orderID;
     }
 
-    
     public void setOrderID(Integer orderID) {
         this.orderID = orderID;
     }
 
-    
     public Integer getProductID() {
         return productID;
     }
@@ -47,35 +53,39 @@ public class Order implements Entity {
         this.productID = productID;
     }
 
-
-
     public Integer getId() {
         return orderID;
     }
 
-    
     public void setId(Integer id) {
         this.orderID = id;
     }
 
-    
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (orderID != null ? orderID.hashCode() : 0);
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.orderID);
+        hash = 79 * hash + Objects.hashCode(this.productID);
+        hash = 79 * hash + Objects.hashCode(this.ordererID);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Order)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        
-        Order other = (Order) object;
-        if ((this.orderID == null && other.orderID != null) ||
-            (this.orderID != null && !this.orderID.equals(other.orderID))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Order other = (Order) obj;
+        if (!Objects.equals(this.orderID, other.orderID)) {
+            return false;
+        }
+        if (!Objects.equals(this.productID, other.productID)) {
+            return false;
+        }
+        if (!Objects.equals(this.ordererID, other.ordererID)) {
             return false;
         }
         return true;
@@ -87,9 +97,7 @@ public class Order implements Entity {
                 + "orderID=" + orderID + ","
                 + "productID=" + productID + ","
                 + "ordererID=" + ordererID + '}';
-        
+
     }
-    
-    
-    
+
 }
