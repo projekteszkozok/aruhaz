@@ -17,7 +17,7 @@ public class Customer implements Entity {
     private Integer customerID;
     private Integer orderID;
     private String name;
-    private String adress;
+    private String address;
     private String telephone;
     private String email;
 
@@ -47,12 +47,12 @@ public class Customer implements Entity {
         this.name = name;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getTelephone() {
@@ -77,7 +77,7 @@ public class Customer implements Entity {
         hash = 17 * hash + Objects.hashCode(this.customerID);
         hash = 17 * hash + Objects.hashCode(this.orderID);
         hash = 17 * hash + Objects.hashCode(this.name);
-        hash = 17 * hash + Objects.hashCode(this.adress);
+        hash = 17 * hash + Objects.hashCode(this.address);
         hash = 17 * hash + Objects.hashCode(this.telephone);
         return hash;
     }
@@ -100,7 +100,7 @@ public class Customer implements Entity {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.adress, other.adress)) {
+        if (!Objects.equals(this.address, other.address)) {
             return false;
         }
         if (!Objects.equals(this.telephone, other.telephone)) {
@@ -114,7 +114,7 @@ public class Customer implements Entity {
 
     @Override
     public String toString() {
-        return "Customer{" + "customerID=" + customerID + ", orderID=" + orderID + ", name=" + name + ", adress=" + adress + ", telephone=" + telephone + ", email=" + email + '}';
+        return "Customer{" + "customerID=" + customerID + ", orderID=" + orderID + ", name=" + name + ", address=" + address + ", telephone=" + telephone + ", email=" + email + '}';
     }
     
     
