@@ -1,8 +1,10 @@
 package hu.elte.pt.store.logic;
 
 import hu.elte.pt.store.logic.controllers.CategoryController;
+import hu.elte.pt.store.logic.controllers.CustomerController;
 import hu.elte.pt.store.logic.controllers.ManufacturerController;
 import hu.elte.pt.store.logic.entities.Category;
+import hu.elte.pt.store.logic.entities.Customer;
 import hu.elte.pt.store.logic.entities.Manufacturer;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +26,7 @@ public class DataSource {
     
     private final CategoryController categoryController;
     private final ManufacturerController manufacturerController;
+    private final CustomerController customerController;
     
     private DataSource(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("store-config.xml");
@@ -37,6 +40,7 @@ public class DataSource {
         
         categoryController = new CategoryController(); 
         manufacturerController = new ManufacturerController();
+        customerController = new CustomerController();
     }
     
     public Connection getConnection() throws SQLException{
@@ -49,6 +53,10 @@ public class DataSource {
     
     public ManufacturerController getManufacturerController() {
         return manufacturerController;
+    }
+    
+    public CustomerController getCustomerController() {
+        return customerController;
     }
     
     public static DataSource getInstance(){
@@ -107,5 +115,23 @@ public class DataSource {
 
     public void updateManufacturer(final Manufacturer manufacturer, final int rowIndex) throws SQLException {
         manufacturerController.updateEntity(manufacturer, rowIndex);
+    }
+    
+    //Customer
+    public List<Customer> getCustomers() throws SQLException {
+        return customerController.getEntities();
+    }
+
+    public int addCustomer() throws SQLException {
+        customerController.addNewEntity();
+        return getManufacturers().size() - 1;
+    }
+
+    public void deleteCustomer(int index) throws SQLException {
+        customerController.deleteEntity(index);
+    }
+
+    public void updateCustomer(final Customer customer, final int rowIndex) throws SQLException {
+        customerController.updateEntity(customer, rowIndex);
     }
 }
