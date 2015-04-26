@@ -59,7 +59,12 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return getStoreAtRow(rowIndex).getName();
+
+        if (columnIndex == 0) {
+            return getStoreAtRow(rowIndex).getName();
+        } else {
+            return getStoreAtRow(rowIndex).getPlace();
+        }
     }
 
     @Override
@@ -85,7 +90,14 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
     @Override
     public void setValueAt(Object aValue, final int rowIndex, int columnIndex) {
         final Store store = getStoreAtRow(rowIndex);
-        store.setName((String) aValue);
+        switch (columnIndex) {
+            case 0:
+                store.setName((String) aValue);
+                break;
+            case 1:
+                store.setPlace((String) aValue);
+                break;
+        }
 
         new SwingWorker<Void, Void>() {
             @Override
