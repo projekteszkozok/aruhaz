@@ -65,9 +65,9 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
                 return getStoreAtRow(rowIndex).getName();
             case 1:
                 return getStoreAtRow(rowIndex).getPlace();
+            default:
+                return "?";
         }
-
-        return 0;
     }
 
     @Override
