@@ -5,7 +5,7 @@
  */
 package hu.elte.pt.store.logic.entities;
 
-import java.util.List;
+
 import java.util.Objects;
 
 /**
@@ -14,29 +14,13 @@ import java.util.Objects;
  */
 public class Order implements Entity {
 
+    public final static String[] fieldNames = new String[]{"PRODUCT_ID", "CUSTOMER_ID"};
+    
     private Integer orderID;
     //private Product productsID;
-    private Integer productID;
-    private Customer ordererID;
+    private Integer product;
+    private Customer customer;
 
-
-    public Order(){ 
-    }
-    
-    public Order(Integer orderID){
-        this.orderID = orderID;
-    }
-    
-    //private List<Products> products;
-
-    public Customer getOrdererID() {
-        return ordererID;
-    }
-
-    public void setOrdererID(Customer ordererID) {
-        this.ordererID = ordererID;
-    }
-    
     public Integer getOrderID() {
         return orderID;
     }
@@ -45,28 +29,29 @@ public class Order implements Entity {
         this.orderID = orderID;
     }
 
-    public Integer getProductID() {
-        return productID;
+    public Integer getProduct() {
+        return product;
     }
 
-    public void setProductID(Integer productID) {
-        this.productID = productID;
+    public void setProduct(Integer product) {
+        this.product = product;
     }
 
-    public Integer getId() {
-        return orderID;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setId(Integer id) {
-        this.orderID = id;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
+
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.orderID);
-        hash = 79 * hash + Objects.hashCode(this.productID);
-        hash = 79 * hash + Objects.hashCode(this.ordererID);
+        hash = 19 * hash + Objects.hashCode(this.orderID);
+        hash = 19 * hash + Objects.hashCode(this.product);
+        hash = 19 * hash + Objects.hashCode(this.customer);
         return hash;
     }
 
@@ -82,21 +67,22 @@ public class Order implements Entity {
         if (!Objects.equals(this.orderID, other.orderID)) {
             return false;
         }
-        if (!Objects.equals(this.productID, other.productID)) {
+        if (!Objects.equals(this.product, other.product)) {
             return false;
         }
-        if (!Objects.equals(this.ordererID, other.ordererID)) {
+        if (!Objects.equals(this.customer, other.customer)) {
             return false;
         }
         return true;
     }
 
+
     @Override
     public String toString() {
         return "Order{"
                 + "orderID=" + orderID + ","
-                + "productID=" + productID + ","
-                + "ordererID=" + ordererID + '}';
+                + "productID=" + product + ","
+                + "ordererID=" + customer + '}';
 
     }
 

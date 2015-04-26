@@ -1,11 +1,13 @@
 package hu.elte.pt.store.logic.controllers;
 
 import hu.elte.pt.store.logic.DataSource;
+import hu.elte.pt.store.logic.entities.Customer;
 import hu.elte.pt.store.logic.entities.Order;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 //befejezetlen
@@ -20,9 +22,12 @@ public class OrderController implements EntityController<Order> {
     private final String TABLE_NAME = "ORDER";
     private final String FULL_SELECT_SQL = "SELECT * FROM " + TABLE_NAME;      //select all data from a database
 
+    
     @Override
     public Order getEntityById(int entityId) throws SQLException {
         Order order = new Order();
+        int customerID;
+        int productID;
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement();
@@ -34,8 +39,13 @@ public class OrderController implements EntityController<Order> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL + " WHERE ORDER_ID = " + entityId);) {
             resultSet.next();
             
-            
             order.setOrderID(resultSet.getInt(1));
+            order.setProduct(resultSet.getInt(2));
+            //productID = resultSet.getInt(2); 
+            customerID = resultSet.getInt(3);
+              
+            //order.setCustomerID((Customer) resultSet.getObject(3));
+            
 
             //When iterating the ResultSet you want to access the column values of each record.
             //We use column index instead of a column name.
@@ -43,29 +53,37 @@ public class OrderController implements EntityController<Order> {
                     + "ResultSet: "
                     + resultSet.getInt(1) + " " //first column, you can add colname
                     + resultSet.getInt(2) + " "  //second column
-                    + resultSet.getInt(3) + " "
+                    + resultSet.getInt(3) + " " //ide mit adjak meg????????????????,
             );
         } catch (SQLException ex) {
             log.error("A táblában az [" + entityId + "] azonosító alapján történő keresés során kivétel keletkezett", ex);
             throw new SQLException("A táblában az [" + entityId + "] azonosító alapján történő keresés sikertelen volt");
         }
+        
+        Customer customer = DataSource.getInstance().getCustomerController().getEntityById(customerID);
+        order.setCustomer(customer);
+        
+        //Product product = DataSource.getInstance().getProductController().getEntityById(productID);
+        //order.setProductID(product);
         return order;
     }
 
     @Override
     public Order getEntityByRowIndex(int rowIndex) throws SQLException {
         Order order = new Order();
+        int customerID;
+        int productID;
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             
             //Moves the cursor to the given row number in this ResultSet object.
-            
             resultSet.absolute(rowIndex + 1);
             
             order.setOrderID(resultSet.getInt(1));
-            
+            customerID = resultSet.getInt(2);
+            productID = resultSet.getInt(3);     
 
             
             log.info("A táblában a sorindex alapján történő keresés sikeres volt."
@@ -77,9 +95,15 @@ public class OrderController implements EntityController<Order> {
             log.error("A táblában a sorindex alapján történő keresés során kivétel keletkezett! ", ex);
             throw new SQLException("A táblában a sorindex alapján történő keresés sikertelen volt!");
         }
+
+        Customer customer = DataSource.getInstance().getCustomerController().getEntityById(customerID);
+        order.setCustomer(customer);
+        
+        //Product product = DataSource.getInstance().getProductController().getEntityById(productID);
+        //order.setProductID(product);
         return order;
     }
-
+    //OK
     @Override
     public int getEntityCount() throws SQLException {
         int orderCount = 0;
@@ -105,11 +129,13 @@ public class OrderController implements EntityController<Order> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.absolute(rowIndex + 1);
         
-            resultSet.updateInt(1, entity.getOrderID());    //or you can use colname for the first parameter
-            
+            resultSet.updateInt(1, entity.getOrderID());
+            resultSet.updateInt(2, entity.getProduct());
+            resultSet.updateObject(3, entity.getCustomer());
            
-            resultSet.updateRow();                                                                  //Módosítani--------------------
-            //log.info("A(z) (" + entity.getOrderID() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
+            
+            resultSet.updateRow();                                                           
+            log.info("A(z) (" + entity.getOrderID() + ") azonosítójú sor sikeresen módosult.");
         } catch (SQLException ex) {
             log.error("A táblában található" + entity.getOrderID()+ " azonosíítóval rendelkező sor módosítása során kivétel keletkezett!", ex);
             throw new SQLException("A táblában található" + entity.getOrderID() + " azonosíítóval rendelkező sor módosítása sikertelen volt!");
@@ -123,7 +149,7 @@ public class OrderController implements EntityController<Order> {
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
-            resultSet.updateInt("MANUFACTURER_ID", DataSource.getInstance().obtainNewId());
+            resultSet.updateInt("ORDER_ID", DataSource.getInstance().obtainNewId());
             
             
             resultSet.insertRow();
@@ -157,9 +183,23 @@ public class OrderController implements EntityController<Order> {
         }
     }
 
-    @Override   //megírni
+    @Override
     public List<Order> getEntities() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Order> orders = new ArrayList<>();
+        try (
+                Connection connection = DataSource.getInstance().getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(FULL_SELECT_SQL)) {
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt(1));
+                //order.setProduct((Product) rs.getObject(2));
+                order.setCustomer((Customer) rs.getObject(3));
+ 
+                orders.add(order);
+            }
+        }
+        return orders;
     }
 
     
