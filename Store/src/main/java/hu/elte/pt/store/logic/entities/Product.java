@@ -21,7 +21,8 @@ public class Product implements Entity {
     /**
      * Tömb, amely eltárolja a megjeleníteni kívánt táblázathoz a fejlécek nevét
      */
-    public static final String[] fieldNames = new String[]{"Termék"};
+    public static final String[] fieldNames = new String[]{"Terméknév", "Gyártó", "Leírás",
+        "Kategória", "Ár", "Raktárkészlet", "Elérhető"};
 
     public Integer getProductID() {
         return productID;
