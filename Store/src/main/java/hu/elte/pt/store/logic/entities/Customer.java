@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hu.elte.pt.store.logic.entities;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A Customer tábla Java megfelelője.
@@ -18,13 +11,11 @@ public class Customer implements Entity {
     
     private Integer customerID;    
     private String name;
-    private List<Order> orders;
     private String address;
     private String telephone;
-    private String email;
-  
+    private String email;  
 
-    public static final String[] fieldNames = new String[]{"Vevő"}; 
+    public static final String[] fieldNames = new String[]{"Vevő", "Cím", "Telefon", "Email"}; 
     
     public Integer getCustomerID() {
         return customerID;
@@ -65,21 +56,12 @@ public class Customer implements Entity {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 37 * hash + Objects.hashCode(this.customerID);
-        hash = 37 * hash + Objects.hashCode(this.name);
-        hash = 37 * hash + Objects.hashCode(this.orders);
+        hash = 37 * hash + Objects.hashCode(this.name);    
         hash = 37 * hash + Objects.hashCode(this.address);
         hash = 37 * hash + Objects.hashCode(this.telephone);
         hash = 37 * hash + Objects.hashCode(this.email);
@@ -100,10 +82,7 @@ public class Customer implements Entity {
         }
         if (!Objects.equals(this.name, other.name)) {
             return false;
-        }
-        if (!Objects.equals(this.orders, other.orders)) {
-            return false;
-        }
+        }      
         if (!Objects.equals(this.address, other.address)) {
             return false;
         }
@@ -118,7 +97,7 @@ public class Customer implements Entity {
 
     @Override
     public String toString() {
-        return "Customer{" + "customerID=" + customerID + ", name=" + name + ", orders=" + orders + ", address=" + address + ", telephone=" + telephone + ", email=" + email + '}';
+        return "Customer{" + "customerID=" + customerID + ", name=" + name + ", address=" + address + ", telephone=" + telephone + ", email=" + email + '}';
     }
 
   
