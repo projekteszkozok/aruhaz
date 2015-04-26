@@ -3,6 +3,7 @@ package hu.elte.pt.store.logic.controllers;
 import hu.elte.pt.store.logic.DataSource;
 import hu.elte.pt.store.logic.entities.Customer;
 import hu.elte.pt.store.logic.entities.Order;
+import hu.elte.pt.store.logic.entities.Product;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +41,7 @@ public class OrderController implements EntityController<Order> {
             resultSet.next();
             
             order.setOrderID(resultSet.getInt(1));
-            order.setProduct(resultSet.getInt(2));
+            productID = resultSet.getInt(2);
             //productID = resultSet.getInt(2); 
             customerID = resultSet.getInt(3);
               
@@ -63,8 +64,8 @@ public class OrderController implements EntityController<Order> {
         Customer customer = DataSource.getInstance().getCustomerController().getEntityById(customerID);
         order.setCustomer(customer);
         
-        //Product product = DataSource.getInstance().getProductController().getEntityById(productID);
-        //order.setProductID(product);
+        Product product = DataSource.getInstance().getProductController().getEntityById(productID);
+        order.setProduct(product);
         return order;
     }
 
@@ -99,8 +100,8 @@ public class OrderController implements EntityController<Order> {
         Customer customer = DataSource.getInstance().getCustomerController().getEntityById(customerID);
         order.setCustomer(customer);
         
-        //Product product = DataSource.getInstance().getProductController().getEntityById(productID);
-        //order.setProductID(product);
+        Product product = DataSource.getInstance().getProductController().getEntityById(productID);
+        order.setProduct(product);
         return order;
     }
     //OK
@@ -130,7 +131,7 @@ public class OrderController implements EntityController<Order> {
             resultSet.absolute(rowIndex + 1);
         
             resultSet.updateInt(1, entity.getOrderID());
-            resultSet.updateInt(2, entity.getProduct());
+            resultSet.updateObject(2, entity.getProduct());
             resultSet.updateObject(3, entity.getCustomer());
            
             
@@ -193,7 +194,7 @@ public class OrderController implements EntityController<Order> {
             while (rs.next()) {
                 Order order = new Order();
                 order.setOrderID(rs.getInt(1));
-                //order.setProduct((Product) rs.getObject(2));
+                order.setProduct((Product) rs.getObject(2));
                 order.setCustomer((Customer) rs.getObject(3));
  
                 orders.add(order);

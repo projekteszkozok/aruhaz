@@ -17,6 +17,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * Store táblához tartozó tábla modell
+ *
  * @author Dudás Orsolya
  */
 public class StoreTableModel extends AbstractTableModel implements EntityHandlerTableModel {
@@ -58,7 +59,15 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return getStoreAtRow(rowIndex).getName();
+
+        switch (columnIndex) {
+            case 0:
+                return getStoreAtRow(rowIndex).getName();
+            case 1:
+                return getStoreAtRow(rowIndex).getPlace();
+        }
+
+        return 0;
     }
 
     @Override
@@ -84,7 +93,14 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
     @Override
     public void setValueAt(Object aValue, final int rowIndex, int columnIndex) {
         final Store store = getStoreAtRow(rowIndex);
-        store.setName((String) aValue);
+        switch (columnIndex) {
+            case 0:
+                store.setName((String) aValue);
+                break;
+            case 1:
+                store.setPlace((String) aValue);
+                break;
+        }
 
         new SwingWorker<Void, Void>() {
             @Override
@@ -183,6 +199,7 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
 
     }
 
+    @Override
     public CellEditorListener getCellEditorListener() {
         return cellEditorListener;
     }
