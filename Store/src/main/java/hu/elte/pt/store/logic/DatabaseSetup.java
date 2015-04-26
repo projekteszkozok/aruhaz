@@ -32,8 +32,7 @@ public class DatabaseSetup {
                         stmt.execute(sql);
                         log.info(sql.replaceAll("\\s+", " ") + " : OK");
                     } catch (SQLException ex) {
-                        System.out.println(ex.getMessage());
-                        log.error(sql.replaceAll("\\s+", " ") + " : ERROR", ex);
+                        log.error(sql.replaceAll("\\s+", " ") + " : FAILED", ex);
                     }
                 }
             }
