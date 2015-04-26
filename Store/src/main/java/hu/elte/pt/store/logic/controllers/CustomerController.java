@@ -29,8 +29,7 @@ public class CustomerController implements EntityController<Customer> {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL + " WHERE CUSTOMER_ID = " + entityId);) {
             resultSet.next();          
-            customer.setCustomerID(resultSet.getInt(1));
-            customer.setOrderID(resultSet.getInt(2));
+            customer.setCustomerID(resultSet.getInt(1));            
             customer.setName(resultSet.getString(3));
             customer.setAddress(resultSet.getString(4));
             customer.setTelephone(resultSet.getString(5));
@@ -59,21 +58,19 @@ public class CustomerController implements EntityController<Customer> {
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.absolute(rowIndex + 1);
-            customer.setCustomerID(resultSet.getInt(1));
-            customer.setOrderID(resultSet.getInt(2));
-            customer.setName(resultSet.getString(3));
-            customer.setAddress(resultSet.getString(4));
-            customer.setTelephone(resultSet.getString(5));
-            customer.setEmail(resultSet.getString(6));
+            customer.setCustomerID(resultSet.getInt(1));            
+            customer.setName(resultSet.getString(2));
+            customer.setAddress(resultSet.getString(3));
+            customer.setTelephone(resultSet.getString(4));
+            customer.setEmail(resultSet.getString(5));
 
             log.info("A táblában a sorindex alapján történő keresés sikeres volt."
                     + "ResultSet: "
-                    + resultSet.getInt(1) + " "
-                    + resultSet.getInt(2) + " "
+                    + resultSet.getInt(1) + " "                 
+                    + resultSet.getString(2) + " "
                     + resultSet.getString(3) + " "
                     + resultSet.getString(4) + " "
-                    + resultSet.getString(5) + " "
-                    + resultSet.getString(6)
+                    + resultSet.getString(5)
             );
         } catch (SQLException ex) {
             log.error("A táblában a sorindex alapján történő keresés során kivétel keletkezett! ", ex);
@@ -106,8 +103,6 @@ public class CustomerController implements EntityController<Customer> {
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.absolute(rowIndex + 1);
-            resultSet.updateInt("CUSTOMER_ID", entity.getCustomerID());
-            resultSet.updateInt("ORDER_ID", entity.getOrderID());
             resultSet.updateString("NAME", entity.getName());
             resultSet.updateString("ADDRESS", entity.getAddress());
             resultSet.updateString("TELEPHONE", entity.getTelephone());
@@ -129,7 +124,6 @@ public class CustomerController implements EntityController<Customer> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
             resultSet.updateInt("CUSTOMER_ID", DataSource.getInstance().obtainNewId());
-            resultSet.updateInt("ORDER_ID", 0);
             resultSet.updateString("NAME", "NAME");
             resultSet.updateString("ADDRESS", "ADDRESS");
             resultSet.updateString("TELEPHONE", "TELEPHONE");
@@ -174,12 +168,11 @@ public class CustomerController implements EntityController<Customer> {
                 ResultSet rs = stmt.executeQuery(FULL_SELECT_SQL)) {
             while (rs.next()) {
                 Customer customer = new Customer();
-                customer.setCustomerID(rs.getInt(1));
-                customer.setOrderID(rs.getInt(2));
-                customer.setName(rs.getString(3));
-                customer.setAddress(rs.getString(4));
-                customer.setTelephone(rs.getString(5));
-                customer.setEmail(rs.getString(6));
+                customer.setCustomerID(rs.getInt(1));               
+                customer.setName(rs.getString(2));
+                customer.setAddress(rs.getString(3));
+                customer.setTelephone(rs.getString(4));
+                customer.setEmail(rs.getString(5));
                 customers.add(customer);
             }
         }

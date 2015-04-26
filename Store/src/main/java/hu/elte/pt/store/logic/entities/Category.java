@@ -1,5 +1,7 @@
 package hu.elte.pt.store.logic.entities;
 
+import java.util.Objects;
+
 /**
  * A Category tábla Java megfelelője.
  * @author Nagy Krisztián
@@ -32,19 +34,24 @@ public class Category implements Entity{
     
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (categoryId != null ? categoryId.hashCode() : 0);
+        int hash = 7;
+        hash +=  71 * hash + Objects.hashCode(this.categoryId);
+        hash += 71 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Category)) {
+        if (object == null) {
             return false;
         }
-        Category other = (Category) object;
-        return (this.categoryId != null || other.categoryId == null) && (this.categoryId == null || this.categoryId.equals(other.categoryId));
+        if (getClass() != object.getClass()) {
+            return false;
+        } 
+        
+        final Category other = (Category) object;
+        
+        return (Objects.equals(this.categoryId, other.categoryId) && Objects.equals(this.name, other.name));
     }
 
     @Override
