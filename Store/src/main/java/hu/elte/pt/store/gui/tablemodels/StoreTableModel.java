@@ -17,6 +17,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * Store táblához tartozó tábla modell
+ *
  * @author Dudás Orsolya
  */
 public class StoreTableModel extends AbstractTableModel implements EntityHandlerTableModel {
@@ -183,6 +184,7 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
 
     }
 
+    @Override
     public CellEditorListener getCellEditorListener() {
         return cellEditorListener;
     }

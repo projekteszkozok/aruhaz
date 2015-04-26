@@ -15,7 +15,7 @@ public class Manufacturer implements Entity {
     private String phone;
     private Integer store;
 
-    public static final String[] fieldNames = new String[]{"Gyártó"};
+   public static final String[] fieldNames = new String[]{"Gyártó", "Kapcsolattartó", "Telephely", "Telefonszám", "Raktár"};
 
     public Integer getManufacturerId() {
         return manufacturerId;

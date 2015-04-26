@@ -4,15 +4,16 @@ import java.util.Objects;
 
 /**
  * A Raktár tábla Java megfelelője.
+ *
  * @author Dudás Orsolya
  */
-
 public class Store implements Entity {
+
     private Integer storeId;
     private String name;
     private String place;
- 
-    public static final String[] fieldNames = new String[]{"Raktár"};
+
+    public static final String[] fieldNames = new String[]{"Bolt", "Hely"};
 
     public Integer getStoreId() {
         return storeId;
@@ -29,7 +30,7 @@ public class Store implements Entity {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getPlace() {
         return place;
     }
@@ -47,7 +48,7 @@ public class Store implements Entity {
         return hash;
     }
 
-@Override
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -70,7 +71,7 @@ public class Store implements Entity {
 
     @Override
     public String toString() {
-        return "Store{" + "storeId=" + storeId + "," + "name=" + name + "," + "place=" + place + '}';
+        return name + " : " + place;
     }
-    
+
 }
