@@ -85,7 +85,7 @@ public class CustomerController implements EntityController<Customer> {
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS CNT FROM CCUSTOMER");) {
+                ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS CNT FROM CUSTOMER");) {
             resultSet.next();
             customerCount = resultSet.getInt("CNT");
             log.debug("A táblában fellelhető sorok számlálása sikeresen lezajlott " + customerCount + " értékkel.");
