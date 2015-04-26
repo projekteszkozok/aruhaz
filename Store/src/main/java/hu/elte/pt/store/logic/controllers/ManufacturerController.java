@@ -124,7 +124,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateString("CONTACT_NAME", entity.getContactName());
             resultSet.updateString("CITY", entity.getCity());
             resultSet.updateString("PHONE", entity.getPhone());
-            resultSet.updateObject("STORE", entity.getStore());
+            resultSet.updateInt("STORE", entity.getStore().getStoreId());
 
             resultSet.updateRow();
             log.info("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
@@ -146,7 +146,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateString("CONTACT_NAME", "CONTACT_NAME");
             resultSet.updateString("CITY", "CITY");
             resultSet.updateString("PHONE", "PHONE");
-            resultSet.updateInt("STORE", DataSource.getInstance().getStoreController().getEntityById(0).getStoreId());
+            resultSet.updateInt("STORE", DataSource.getInstance().getStores().get(0).getStoreId());
             resultSet.insertRow();
             log.info("Az új gyártó létrehozása sikeres volt.");
         } catch (SQLException ex) {
