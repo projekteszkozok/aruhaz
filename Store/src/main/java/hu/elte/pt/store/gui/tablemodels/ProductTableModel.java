@@ -183,6 +183,7 @@ public class ProductTableModel extends AbstractTableModel implements EntityHandl
         }
     }
 
+    @Override
     public CellEditorListener getCellEditorListener() {
         return cellEditorListener;
     }
