@@ -31,7 +31,7 @@ public class StoreController implements EntityController<Store> {
             store.setStoreId(resultSet.getInt(1));
             store.setName(resultSet.getString(2));
             store.setPlace(resultSet.getString(3));
-            log.info("A táblában az azonosító alapján történő keresés sikeres volt. "
+            log.debug("A táblában az azonosító alapján történő keresés sikeres volt. "
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "
                     + resultSet.getString(2) + " "
@@ -56,7 +56,7 @@ public class StoreController implements EntityController<Store> {
             store.setName(resultSet.getString(2));
             store.setPlace(resultSet.getString(3));
 
-            log.info("A táblában a sorindex alapján történő keresés sikeres volt."
+            log.debug("A táblában a sorindex alapján történő keresés sikeres volt."
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "
                     + resultSet.getString(2) + " "
