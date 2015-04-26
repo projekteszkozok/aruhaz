@@ -93,9 +93,9 @@ public class StoreController implements EntityController<Store> {
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.absolute(rowIndex + 1);
-            resultSet.updateInt("STORE_ID", entity.getStoreId());
-            resultSet.updateString("NAME", entity.getName());
-            resultSet.updateString("PLACE", entity.getPlace());
+            resultSet.updateInt(1, entity.getStoreId());
+            resultSet.updateString(2, entity.getName());
+            resultSet.updateString(3, entity.getPlace());
 
             resultSet.updateRow();
             log.info("A(z) (" + entity.getStoreId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
@@ -112,9 +112,9 @@ public class StoreController implements EntityController<Store> {
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
-            resultSet.updateInt("STORE_ID", DataSource.getInstance().obtainNewId());
-            resultSet.updateString("NAME", "NAME");
-            resultSet.updateString("PLACE", "PLACE");
+            resultSet.updateInt(1, DataSource.getInstance().obtainNewId());
+            resultSet.updateString(2, "NAME");
+            resultSet.updateString(3, "PLACE");
             resultSet.insertRow();
             log.info("Az új gyártó létrehozása sikeres volt.");
         } catch (SQLException ex) {
