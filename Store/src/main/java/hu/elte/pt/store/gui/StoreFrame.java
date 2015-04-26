@@ -27,106 +27,107 @@ import org.apache.log4j.Logger;
 
 /**
  * GUI Frame
+ *
  * @author Nagy Krisztián
  */
-public class StoreFrame extends JFrame{
-    
+public class StoreFrame extends JFrame {
+
     private static final Logger log = Logger.getLogger(StoreFrame.class);
-    
-    public static void displayError(final String message){
+
+    public static void displayError(final String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
-    
+
     private final JTabbedPane jTabbedPane;
     private final JTable categoryTable, storeTable;
     private final CategoryTableModel categoryTableModel;
     private final StoreTableModel storeTableModel;
-    
-    public StoreFrame(){
+
+    public StoreFrame() {
         try {
             DataSource.getInstance().getConnection().close();
         } catch (SQLException ex) {
             log.error("Az adatbáziskapcsolat létrehozása során kivétel lépett fel!", ex);
             displayError(ex.getMessage());
-            System.exit(1);        
+            System.exit(1);
         }
-        
+
         setTitle("Store");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(600,400);
+        setSize(600, 400);
         setLocationRelativeTo(null);
-        
+
         StoreMenuBar menuBar = new StoreMenuBar();
         setJMenuBar(menuBar);
-        
+
         jTabbedPane = new JTabbedPane();
         getContentPane().add(jTabbedPane, BorderLayout.CENTER);
         jTabbedPane.addChangeListener(menuBar);
-        
+
         categoryTableModel = new CategoryTableModel();
         categoryTable = new JTable(categoryTableModel);
         categoryTable.setAutoCreateRowSorter(true);
         categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setCellEditorListener(categoryTable, categoryTableModel);
-         
+
         storeTableModel = new StoreTableModel();
         storeTable = new JTable(storeTableModel);
         storeTable.setAutoCreateRowSorter(true);
         storeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setCellEditorListener(storeTable, storeTableModel);
-               
+
         jTabbedPane.add("Kategória", new JScrollPane(categoryTable));
-        jTabbedPane.add("Raktár", new JScrollPane(storeTable));
-        
+        jTabbedPane.add("Bolt", new JScrollPane(storeTable));
+
     }
-    
-    private void setCellEditorListener(final JTable table, final EntityHandlerTableModel tableModel){
+
+    private void setCellEditorListener(final JTable table, final EntityHandlerTableModel tableModel) {
         Enumeration<TableColumn> tableColumns = table.getColumnModel().getColumns();
-        while(tableColumns.hasMoreElements()){
+        while (tableColumns.hasMoreElements()) {
             TableColumn tableColumn = tableColumns.nextElement();
-            if(tableColumn.getCellEditor() != null){
+            if (tableColumn.getCellEditor() != null) {
                 tableColumn.getCellEditor().addCellEditorListener(tableModel.getCellEditorListener());
             }
         }
     }
-    
-    private final Action newCategoryAction = new AbstractAction("Kategória hozzáadása"){
+
+    private final Action newCategoryAction = new AbstractAction("Kategória hozzáadása") {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             categoryTableModel.addNewEntity();
         }
-        
-    };    
-    
-    private final Action deleteCategoryAction = new AbstractAction("Kategória törlése"){
+
+    };
+
+    private final Action deleteCategoryAction = new AbstractAction("Kategória törlése") {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             deleteRowsFromTable(categoryTable, categoryTableModel);
         }
-        
+
     };
-    
-    private final Action newStoreAction = new AbstractAction("Raktár hozzáadása"){
+
+    private final Action newStoreAction = new AbstractAction("Bolt hozzáadása") {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             storeTableModel.addNewEntity();
         }
-        
-    };    
-    
-    private final Action deleteStoreAction = new AbstractAction("Raktár törlése"){
+
+    };
+
+    private final Action deleteStoreAction = new AbstractAction("Bolt törlése") {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             deleteRowsFromTable(storeTable, storeTableModel);
         }
-        
-    };    
-    
+
+    };
+
     private void deleteRowsFromTable(JTable table, EntityHandlerTableModel tableModel) {
         int[] selectedRows = table.getSelectedRows();
         ArrayList<Integer> rowIndicesList = new ArrayList<Integer>(selectedRows.length);
@@ -140,23 +141,23 @@ public class StoreFrame extends JFrame{
             Integer rowIndex = rowIndicesList.get(i);
             tableModel.deleteEntity(rowIndex);
         }
-    }    
-    
-    private class StoreMenuBar extends JMenuBar implements ChangeListener{
-        
+    }
+
+    private class StoreMenuBar extends JMenuBar implements ChangeListener {
+
         private final JMenu categoryMenu, storeMenu;
-        
-        public StoreMenuBar(){
+
+        public StoreMenuBar() {
             categoryMenu = new JMenu("Kategória");
             categoryMenu.add(newCategoryAction);
             categoryMenu.add(deleteCategoryAction);
-            
-            storeMenu = new JMenu("Raktár");
+
+            storeMenu = new JMenu("Bolt");
             storeMenu.add(newStoreAction);
             storeMenu.add(deleteStoreAction);
-            
+
         }
-        
+
         @Override
         public void stateChanged(ChangeEvent e) {
             removeAll();
@@ -165,12 +166,12 @@ public class StoreFrame extends JFrame{
                 case "Kategória":
                     add(categoryMenu);
                     break;
-                case "Raktár":
+                case "Bolt":
                     add(storeMenu);
                     break;
             }
 
         }
-    
+
     }
 }
