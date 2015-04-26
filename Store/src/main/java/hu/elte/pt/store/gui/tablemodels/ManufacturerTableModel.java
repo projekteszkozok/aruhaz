@@ -112,11 +112,18 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
     @Override
     public void setValueAt(Object aValue, final int rowIndex, int columnIndex) {
         final Manufacturer manufacturer = getManufacturerAtRow(rowIndex);
-        manufacturer.setName((String) aValue);
-        manufacturer.setContactName((String) aValue);
-        manufacturer.setCity((String) aValue);
-        manufacturer.setPhone((String) aValue);
-        manufacturer.setStore((Store) aValue);
+        switch (columnIndex) {
+            case 0:
+                manufacturer.setName((String) aValue);
+            case 1:
+                manufacturer.setContactName((String) aValue);
+            case 2:
+                manufacturer.setCity((String) aValue);
+            case 3:
+                manufacturer.setPhone((String) aValue);
+            case 4:
+                manufacturer.setStore((Store) aValue);
+        }
 
         new SwingWorker<Void, Void>() {
             @Override
