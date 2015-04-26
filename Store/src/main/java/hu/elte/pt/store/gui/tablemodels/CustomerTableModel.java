@@ -58,7 +58,18 @@ public class CustomerTableModel extends AbstractTableModel implements EntityHand
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return getCustomerAtRow(rowIndex).getName();
+         switch (columnIndex) {
+            case 0:
+                return getCustomerAtRow(rowIndex).getName();
+            case 1:
+                return getCustomerAtRow(rowIndex).getAddress();
+            case 2:
+                return getCustomerAtRow(rowIndex).getTelephone();
+            case 3:
+                return getCustomerAtRow(rowIndex).getEmail();  
+            default:
+                return null;
+        }
     }
     
     @Override
@@ -84,7 +95,20 @@ public class CustomerTableModel extends AbstractTableModel implements EntityHand
     @Override
     public void setValueAt(Object aValue, final int rowIndex, int columnIndex) {
         final Customer customer = getCustomerAtRow(rowIndex);
-        customer.setName((String) aValue);
+        switch (columnIndex) {
+            case 0:
+                customer.setName((String) aValue);
+                break;
+            case 1:
+                customer.setAddress((String) aValue);
+                break;
+            case 2:
+                customer.setTelephone((String) aValue);
+                break;
+            case 3:
+                customer.setEmail((String) aValue);
+                break;
+        }
 
         new SwingWorker<Void, Void>() {
             @Override
@@ -182,6 +206,7 @@ public class CustomerTableModel extends AbstractTableModel implements EntityHand
         }
     }    
 
+    @Override
     public CellEditorListener getCellEditorListener() {
         return cellEditorListener;
     }
