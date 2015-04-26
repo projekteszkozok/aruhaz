@@ -2,12 +2,12 @@ package hu.elte.pt.store.gui;
 
 import hu.elte.pt.store.gui.tablemodels.CategoryTableModel;
 import hu.elte.pt.store.gui.tablemodels.EntityHandlerTableModel;
+import hu.elte.pt.store.gui.tablemodels.StoreTableModel;
 import hu.elte.pt.store.logic.DataSource;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import javax.swing.AbstractAction;
@@ -38,8 +38,9 @@ public class StoreFrame extends JFrame{
     }
     
     private final JTabbedPane jTabbedPane;
-    private final JTable categoryTable;
+    private final JTable categoryTable, storeTable;
     private final CategoryTableModel categoryTableModel;
+    private final StoreTableModel storeTableModel;
     
     public StoreFrame(){
         try {
@@ -67,17 +68,27 @@ public class StoreFrame extends JFrame{
         categoryTable = new JTable(categoryTableModel);
         categoryTable.setAutoCreateRowSorter(true);
         categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        Enumeration<TableColumn> tableColumns = categoryTable.getColumnModel().getColumns();
-        while (tableColumns.hasMoreElements()) {
+        setCellEditorListener(categoryTable, categoryTableModel);
+         
+        storeTableModel = new StoreTableModel();
+        storeTable = new JTable(storeTableModel);
+        storeTable.setAutoCreateRowSorter(true);
+        storeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setCellEditorListener(storeTable, storeTableModel);
+               
+        jTabbedPane.add("Kategória", new JScrollPane(categoryTable));
+        jTabbedPane.add("Raktár", new JScrollPane(storeTable));
+        
+    }
+    
+    private void setCellEditorListener(final JTable table, final EntityHandlerTableModel tableModel){
+        Enumeration<TableColumn> tableColumns = table.getColumnModel().getColumns();
+        while(tableColumns.hasMoreElements()){
             TableColumn tableColumn = tableColumns.nextElement();
-            if (tableColumn.getCellEditor() != null) {
-                tableColumn.getCellEditor().addCellEditorListener(categoryTableModel.getCellEditorListener());
+            if(tableColumn.getCellEditor() != null){
+                tableColumn.getCellEditor().addCellEditorListener(tableModel.getCellEditorListener());
             }
         }
-         
-     
-        jTabbedPane.add("Kategória", new JScrollPane(categoryTable));
-        
     }
     
     private final Action newCategoryAction = new AbstractAction("Kategória hozzáadása"){
@@ -98,6 +109,24 @@ public class StoreFrame extends JFrame{
         
     };
     
+    private final Action newStoreAction = new AbstractAction("Raktár hozzáadása"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            storeTableModel.addNewEntity();
+        }
+        
+    };    
+    
+    private final Action deleteStoreAction = new AbstractAction("Raktár törlése"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            deleteRowsFromTable(storeTable, storeTableModel);
+        }
+        
+    };    
+    
     private void deleteRowsFromTable(JTable table, EntityHandlerTableModel tableModel) {
         int[] selectedRows = table.getSelectedRows();
         ArrayList<Integer> rowIndicesList = new ArrayList<Integer>(selectedRows.length);
@@ -115,12 +144,17 @@ public class StoreFrame extends JFrame{
     
     private class StoreMenuBar extends JMenuBar implements ChangeListener{
         
-        private final JMenu categoryMenu;
+        private final JMenu categoryMenu, storeMenu;
         
         public StoreMenuBar(){
             categoryMenu = new JMenu("Kategória");
             categoryMenu.add(newCategoryAction);
             categoryMenu.add(deleteCategoryAction);
+            
+            storeMenu = new JMenu("Raktár");
+            storeMenu.add(newStoreAction);
+            storeMenu.add(deleteStoreAction);
+            
         }
         
         @Override
@@ -130,6 +164,9 @@ public class StoreFrame extends JFrame{
             switch (jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())) {
                 case "Kategória":
                     add(categoryMenu);
+                    break;
+                case "Raktár":
+                    add(storeMenu);
                     break;
             }
 

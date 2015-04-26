@@ -3,10 +3,12 @@ package hu.elte.pt.store.logic;
 import hu.elte.pt.store.logic.controllers.CategoryController;
 import hu.elte.pt.store.logic.controllers.CustomerController;
 import hu.elte.pt.store.logic.controllers.ManufacturerController;
+import hu.elte.pt.store.logic.controllers.ProductController;
 import hu.elte.pt.store.logic.controllers.StoreController;
 import hu.elte.pt.store.logic.entities.Category;
 import hu.elte.pt.store.logic.entities.Customer;
 import hu.elte.pt.store.logic.entities.Manufacturer;
+import hu.elte.pt.store.logic.entities.Product;
 import hu.elte.pt.store.logic.entities.Store;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,6 +32,7 @@ public class DataSource {
     private final ManufacturerController manufacturerController;
     private final CustomerController customerController;    
     private final StoreController storeController;
+     private final ProductController productController;
     
     private DataSource(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("store-config.xml");
@@ -45,6 +48,7 @@ public class DataSource {
         manufacturerController = new ManufacturerController();
         customerController = new CustomerController();
         storeController = new StoreController();
+        productController = new ProductController();
     }
     
     public Connection getConnection() throws SQLException{
@@ -65,6 +69,10 @@ public class DataSource {
     
     public StoreController getStoreController() {
         return storeController;
+    }
+    
+    public ProductController getProductController() {
+        return productController;
     }
     
     public static DataSource getInstance(){
@@ -132,7 +140,7 @@ public class DataSource {
 
     public int addCustomer() throws SQLException {
         customerController.addNewEntity();
-        return getManufacturers().size() - 1;
+        return getCustomers().size() - 1;
     }
 
     public void deleteCustomer(int index) throws SQLException {
@@ -150,7 +158,7 @@ public class DataSource {
 
     public int addStore() throws SQLException {
         storeController.addNewEntity();
-        return getManufacturers().size() - 1;
+        return getStores().size() - 1;
     }
 
     public void deleteStore(int index) throws SQLException {
@@ -159,5 +167,23 @@ public class DataSource {
 
     public void updateStore(final Store store, final int rowIndex) throws SQLException {
         storeController.updateEntity(store, rowIndex);
+    }
+    
+     //Product
+    public List<Product> getProducts() throws SQLException {
+        return productController.getEntities();
+    }
+    
+    public int addProduct() throws SQLException {
+        productController.addNewEntity();
+        return getProducts().size() - 1;
+    }
+
+    public void deleteProduct(int index) throws SQLException {
+        productController.deleteEntity(index);
+    }
+
+    public void updateProduct(final Product product, final int rowIndex) throws SQLException {
+        productController.updateEntity(product, rowIndex);
     }
 }

@@ -2,11 +2,11 @@ package hu.elte.pt.store.gui.tablemodels;
 
 import hu.elte.pt.store.gui.StoreFrame;
 import hu.elte.pt.store.logic.DataSource;
-import hu.elte.pt.store.logic.entities.Category;
+import hu.elte.pt.store.logic.entities.Product;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
@@ -16,35 +16,36 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * A Category táblához tartozó tábla model.
- * @author Nagy Krisztián
+ * A Product táblához tartozó tábla modell.
+ *
+ * @author Bojtos Csaba
  */
-public class CategoryTableModel extends AbstractTableModel implements EntityHandlerTableModel{
+public class ProductTableModel extends AbstractTableModel implements EntityHandlerTableModel {
 
     private final int refreshInterval;
-    private final List<Category> categories;
+    private final List<Product> products;
     private final Timer refreshTimer;
     private final CellEditorListener cellEditorListener;
-    
-    public CategoryTableModel(){
+
+    public ProductTableModel() {
         refreshInterval = 5 * 1000;
-        categories = new CopyOnWriteArrayList<>();
-        cellEditorListener = new CategoryCellEditorListener();
+        products = new CopyOnWriteArrayList<>();
+        cellEditorListener = new ProductTableModel.ProductCellEditorListener();
         refreshTimer = new Timer(refreshInterval, new ActionListener() {
-   
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                reloadCategories();
+                reloadProducts();
             }
         });
-        reloadCategories();
-        refreshTimer.start();        
+        reloadProducts();
+        refreshTimer.start();
     }
-    
+
     @Override
     public int getRowCount() {
         try {
-            return DataSource.getInstance().getCategoryController().getEntityCount();
+            return DataSource.getInstance().getProductController().getEntityCount();
         } catch (SQLException ex) {
             StoreFrame.displayError(ex.getMessage());
             return 0;
@@ -53,43 +54,43 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
 
     @Override
     public int getColumnCount() {
-        return Category.fieldNames.length;
+        return Product.fieldNames.length;
     }
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        return getCategoryAtRow(rowIndex).getName();
-    }
-    
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return String.class;
     }
-    
+
     @Override
     public String getColumnName(int column) {
-        return Category.fieldNames[column];
-    }    
-    
+        return Product.fieldNames[column];
+    }
+
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         refreshTimer.stop();
         return true;
     }
-    
-    private Category getCategoryAtRow(int rowIndex) {
-        return categories.get(rowIndex);
-    }    
-    
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        return getProductAtRow(rowIndex).getProductID();
+    }
+
+    private Product getProductAtRow(int rowIndex) {
+        return products.get(rowIndex);
+    }
+
     @Override
     public void setValueAt(Object aValue, final int rowIndex, int columnIndex) {
-        final Category category = getCategoryAtRow(rowIndex);
-        category.setName((String) aValue);
+        final Product product = getProductAtRow(rowIndex);
+        product.setProductName((String) aValue);
 
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                DataSource.getInstance().updateCategory(category, rowIndex);
+                DataSource.getInstance().updateProduct(product, rowIndex);
                 return null;
             }
 
@@ -97,20 +98,20 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
             protected void done() {
                 try {
                     get();
-                    reloadCategories();
+                    reloadProducts();
                 } catch (InterruptedException | ExecutionException ex) {
-                    StoreFrame.displayError("Az új kategória hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
+                    StoreFrame.displayError("Az új termék hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
-        }.execute();        
+        }.execute();
     }
-    
+
     @Override
     public void addNewEntity() {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                DataSource.getInstance().addCategory();
+                DataSource.getInstance().addProduct();
                 return null;
             }
 
@@ -118,12 +119,12 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
             protected void done() {
                 try {
                     get();
-                    reloadCategories();
+                    reloadProducts();
                 } catch (InterruptedException | ExecutionException ex) {
-                    StoreFrame.displayError("Az új kategória hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
+                    StoreFrame.displayError("Az új termék hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
-        }.execute();        
+        }.execute();
     }
 
     @Override
@@ -131,7 +132,7 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                DataSource.getInstance().deleteCategory(rowIndex);
+                DataSource.getInstance().deleteProduct(rowIndex);
                 return null;
             }
 
@@ -139,21 +140,21 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
             protected void done() {
                 try {
                     get();
-                    reloadCategories();
+                    reloadProducts();
                 } catch (InterruptedException | ExecutionException ex) {
-                    StoreFrame.displayError("A kategória törlése során kivétel keletkezett, így a művelet sikertelen volt!");
+                    StoreFrame.displayError("A termék törlése során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
-        }.execute();         
+        }.execute();
     }
- 
-    private void reloadCategories() {
+
+    private void reloadProducts() {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                List<Category> categories = DataSource.getInstance().getCategoryController().getEntities();
-                CategoryTableModel.this.categories.clear();
-                CategoryTableModel.this.categories.addAll(categories);
+                List<Product> products = DataSource.getInstance().getProductController().getEntities();
+                ProductTableModel.this.products.clear();
+                ProductTableModel.this.products.addAll(products);
                 return null;
             }
 
@@ -163,13 +164,13 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
                     get();
                     fireTableDataChanged();
                 } catch (InterruptedException | ExecutionException ex) {
-                    StoreFrame.displayError("Hiba történt a kategóriák újratöltése során!");
+                    StoreFrame.displayError("Hiba történt a termékek újratöltése során!");
                 }
             }
         }.execute();
-    }    
-    
-    private class CategoryCellEditorListener implements CellEditorListener {
+    }
+
+    private class ProductCellEditorListener implements CellEditorListener {
 
         @Override
         public void editingStopped(ChangeEvent e) {
@@ -180,13 +181,11 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
         public void editingCanceled(ChangeEvent e) {
             refreshTimer.start();
         }
-
-    }    
+    }
 
     @Override
     public CellEditorListener getCellEditorListener() {
         return cellEditorListener;
     }
-    
-    
+
 }
