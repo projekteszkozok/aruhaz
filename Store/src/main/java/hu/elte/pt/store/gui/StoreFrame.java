@@ -1,5 +1,6 @@
 package hu.elte.pt.store.gui;
 
+import hu.elte.pt.store.gui.comboboxmodels.EntityComboBoxModel;
 import hu.elte.pt.store.gui.tablemodels.CategoryTableModel;
 import hu.elte.pt.store.gui.tablemodels.CustomerTableModel;
 import hu.elte.pt.store.gui.tablemodels.EntityHandlerTableModel;
@@ -15,6 +16,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -92,12 +95,15 @@ public class StoreFrame extends JFrame{
         manufacturerTable = new JTable(manufacturerTableModel);
         manufacturerTable.setAutoCreateRowSorter(true);
         manufacturerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        manufacturerTable.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getManufacturerController()))));
         setCellEditorListener(manufacturerTable, manufacturerTableModel);
         
         productTableModel = new ProductTableModel();
         productTable = new JTable(productTableModel);
         productTable.setAutoCreateRowSorter(true);
         productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        productTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getManufacturerController()))));
+        productTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getCategoryController()))));        
         setCellEditorListener(productTable, productTableModel);        
         
         jTabbedPane.add("Bolt", new JScrollPane(storeTable));
