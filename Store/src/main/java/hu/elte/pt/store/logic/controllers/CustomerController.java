@@ -30,18 +30,17 @@ public class CustomerController implements EntityController<Customer> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL + " WHERE CUSTOMER_ID = " + entityId);) {
             resultSet.next();          
             customer.setCustomerID(resultSet.getInt(1));            
-            customer.setName(resultSet.getString(3));
-            customer.setAddress(resultSet.getString(4));
-            customer.setTelephone(resultSet.getString(5));
-            customer.setEmail(resultSet.getString(6));
+            customer.setName(resultSet.getString(2));
+            customer.setAddress(resultSet.getString(3));
+            customer.setTelephone(resultSet.getString(4));
+            customer.setEmail(resultSet.getString(5));
             log.info("A táblában az azonosító alapján történő keresés sikeres volt. "
                     + "ResultSet: "
-                    + resultSet.getInt(1) + " "
-                    + resultSet.getInt(2) + " "
+                    + resultSet.getInt(1) + " "                   
+                    + resultSet.getString(2) + " "
                     + resultSet.getString(3) + " "
                     + resultSet.getString(4) + " "
-                    + resultSet.getString(5) + " "
-                    + resultSet.getString(6)
+                    + resultSet.getString(5)
             );
         } catch (SQLException ex) {
             log.error("A táblában az [" + entityId + "] azonosító alapján történő keresés során kivétel keletkezett", ex);
