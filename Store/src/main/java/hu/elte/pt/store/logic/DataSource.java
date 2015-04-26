@@ -201,15 +201,15 @@ public class DataSource {
     }    
     
     public int addOrder() throws SQLException{
-        categoryController.addNewEntity();
-        return getCategories().size() - 1;
+        orderController.addNewEntity();
+        return getOrders().size() - 1;
     }
     
     public void deleteOrder(int index) throws SQLException{
-        categoryController.deleteEntity(index);
+        orderController.deleteEntity(index);
     }
     
-    public void updateOrder(final Category category, final int rowIndex) throws SQLException{
-        categoryController.updateEntity(category, rowIndex);
+    public void updateOrder(final Order order, final int rowIndex) throws SQLException{
+        orderController.updateEntity(order, rowIndex);
     }
 }
