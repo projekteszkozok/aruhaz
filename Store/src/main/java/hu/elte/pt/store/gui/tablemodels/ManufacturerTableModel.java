@@ -115,14 +115,19 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
         switch (columnIndex) {
             case 0:
                 manufacturer.setName((String) aValue);
+                break;
             case 1:
                 manufacturer.setContactName((String) aValue);
+                break;
             case 2:
                 manufacturer.setCity((String) aValue);
+                break;
             case 3:
                 manufacturer.setPhone((String) aValue);
+                break;
             case 4:
                 manufacturer.setStore((Store) aValue);
+                break;
         }
 
         new SwingWorker<Void, Void>() {
