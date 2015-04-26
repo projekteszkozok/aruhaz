@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Manufacturer controller osztálya
+ *
  * @author Honti Dora
  */
 public class ManufacturerController implements EntityController<Manufacturer> {
@@ -24,6 +25,8 @@ public class ManufacturerController implements EntityController<Manufacturer> {
     @Override
     public Manufacturer getEntityById(int entityId) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
+        int storeId;
+
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement();
@@ -34,7 +37,8 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             manufacturer.setContactName(resultSet.getString(3));
             manufacturer.setCity(resultSet.getString(4));
             manufacturer.setPhone(resultSet.getString(5));
-            manufacturer.setStore((Store) resultSet.getObject(6));
+            storeId = resultSet.getInt(6);
+
             log.info("A táblában az azonosító alapján történő keresés sikeres volt. "
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "
@@ -48,12 +52,17 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             log.error("A táblában az [" + entityId + "] azonosító alapján történő keresés során kivétel keletkezett", ex);
             throw new SQLException("A táblában az [" + entityId + "] azonosító alapján történő keresés sikertelen volt");
         }
+
+        Store store = DataSource.getInstance().getStoreController().getEntityById(storeId);
+        manufacturer.setStore(store);
+
         return manufacturer;
     }
 
     @Override
     public Manufacturer getEntityByRowIndex(int rowIndex) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
+        int storeId;
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -64,7 +73,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             manufacturer.setContactName(resultSet.getString(3));
             manufacturer.setCity(resultSet.getString(4));
             manufacturer.setPhone(resultSet.getString(5));
-            manufacturer.setStore((Store) resultSet.getObject(6));
+            storeId = resultSet.getInt(6);
 
             log.info("A táblában a sorindex alapján történő keresés sikeres volt."
                     + "ResultSet: "
@@ -79,6 +88,10 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             log.error("A táblában a sorindex alapján történő keresés során kivétel keletkezett! ", ex);
             throw new SQLException("A táblában a sorindex alapján történő keresés sikertelen volt!");
         }
+
+        Store store = DataSource.getInstance().getStoreController().getEntityById(storeId);
+        manufacturer.setStore(store);
+
         return manufacturer;
     }
 
