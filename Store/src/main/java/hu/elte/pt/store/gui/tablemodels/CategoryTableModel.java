@@ -183,6 +183,7 @@ public class CategoryTableModel extends AbstractTableModel implements EntityHand
 
     }    
 
+    @Override
     public CellEditorListener getCellEditorListener() {
         return cellEditorListener;
     }
