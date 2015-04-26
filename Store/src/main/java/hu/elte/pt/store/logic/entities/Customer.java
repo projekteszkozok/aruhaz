@@ -2,7 +2,6 @@ package hu.elte.pt.store.logic.entities;
 
 import java.util.Objects;
 
-
 /**
  * A Customer tábla Java megfelelője.
  * @author Holló Eszter
@@ -14,8 +13,7 @@ public class Customer implements Entity {
     private String name;
     private String address;
     private String telephone;
-    private String email;
-  
+    private String email;  
 
     public static final String[] fieldNames = new String[]{"Vevő", "Cím", "Telefon", "Email"}; 
     
@@ -58,9 +56,7 @@ public class Customer implements Entity {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
-
+    
     @Override
     public int hashCode() {
         int hash = 5;
