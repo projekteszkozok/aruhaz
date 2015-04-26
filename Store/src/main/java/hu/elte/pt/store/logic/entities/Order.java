@@ -18,7 +18,8 @@ public class Order implements Entity {
     
     private Integer orderID;
     //private Product productsID;
-    private Integer product;
+    private Product product;
+
     private Customer customer;
 
     public Integer getOrderID() {
@@ -29,11 +30,11 @@ public class Order implements Entity {
         this.orderID = orderID;
     }
 
-    public Integer getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Integer product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
@@ -76,14 +77,14 @@ public class Order implements Entity {
         return true;
     }
 
-
+    
     @Override
     public String toString() {
         return "Order{"
                 + "orderID=" + orderID + ","
                 + "productID=" + product + ","
                 + "ordererID=" + customer + '}';
-
+        
     }
 
 }
