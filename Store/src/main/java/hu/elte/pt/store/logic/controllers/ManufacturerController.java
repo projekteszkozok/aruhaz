@@ -123,8 +123,8 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateString("NAME", entity.getName());
             resultSet.updateString("CONTACT_NAME", entity.getContactName());
             resultSet.updateString("CITY", entity.getCity());
-            resultSet.updateString("PHONE", entity.getPhone());
-            resultSet.updateInt("STORE", entity.getStore().getStoreId());
+            resultSet.updateString("TELEPHONE", entity.getPhone());
+            resultSet.updateInt("STORE_ID", entity.getStore().getStoreId());
 
             resultSet.updateRow();
             log.debug("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
@@ -145,8 +145,8 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateString("NAME", "NAME");
             resultSet.updateString("CONTACT_NAME", "CONTACT_NAME");
             resultSet.updateString("CITY", "CITY");
-            resultSet.updateString("PHONE", "PHONE");
-            resultSet.updateInt("STORE", DataSource.getInstance().getStores().get(0).getStoreId());
+            resultSet.updateString("TELEPHONE", "TELEPHONE");
+            resultSet.updateInt("STORE_ID", DataSource.getInstance().getStores().get(0).getStoreId());
             resultSet.insertRow();
             log.debug("Az új gyártó létrehozása sikeres volt.");
         } catch (SQLException ex) {
