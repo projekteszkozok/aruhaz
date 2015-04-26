@@ -18,30 +18,31 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * Manufacturer táblához tartozó tábla model
+ *
  * @author Honti Dora
  */
-public class ManufacturerTableModel extends AbstractTableModel implements EntityHandlerTableModel{
+public class ManufacturerTableModel extends AbstractTableModel implements EntityHandlerTableModel {
 
     private final int refreshInterval;
     private final List<Manufacturer> manufacturers;
     private final Timer refreshTimer;
     private final CellEditorListener cellEditorListener;
-    
-    public ManufacturerTableModel(){
+
+    public ManufacturerTableModel() {
         refreshInterval = 5 * 1000;
         manufacturers = new CopyOnWriteArrayList<>();
         cellEditorListener = new ManufacturerCellEditorListener();
         refreshTimer = new Timer(refreshInterval, new ActionListener() {
-   
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 reloadManufacturers();
             }
         });
         reloadManufacturers();
-        refreshTimer.start();        
+        refreshTimer.start();
     }
-    
+
     @Override
     public int getRowCount() {
         try {
@@ -59,29 +60,55 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return getManufacturerAtRow(rowIndex).getName();
+        switch (columnIndex) {
+            case 0:
+                return getManufacturerAtRow(rowIndex).getName();
+            case 1:
+                return getManufacturerAtRow(rowIndex).getContactName();
+            case 2:
+                return getManufacturerAtRow(rowIndex).getCity();
+            case 3:
+                return getManufacturerAtRow(rowIndex).getPhone();
+            case 4:
+                return getManufacturerAtRow(rowIndex).getStore();
+            default:
+                return null;
+        }
     }
-    
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return String.class;
+        switch (columnIndex) {
+            case 0:
+                return String.class;
+            case 1:
+                return String.class;
+            case 2:
+                return String.class;
+            case 3:
+                return String.class;
+            case 4:
+                return Store.class;
+            default:
+                return null;
+        }
     }
-    
+
     @Override
     public String getColumnName(int column) {
         return Manufacturer.fieldNames[column];
-    }    
-    
+    }
+
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         refreshTimer.stop();
         return true;
     }
-    
+
     private Manufacturer getManufacturerAtRow(int rowIndex) {
         return manufacturers.get(rowIndex);
-    }    
-    
+    }
+
     @Override
     public void setValueAt(Object aValue, final int rowIndex, int columnIndex) {
         final Manufacturer manufacturer = getManufacturerAtRow(rowIndex);
@@ -107,9 +134,9 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
                     StoreFrame.displayError("Az új gyártó hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
-        }.execute();        
+        }.execute();
     }
-    
+
     @Override
     public void addNewEntity() {
         new SwingWorker<Void, Void>() {
@@ -128,7 +155,7 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
                     StoreFrame.displayError("Az új gyártó hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
-        }.execute();        
+        }.execute();
     }
 
     @Override
@@ -149,16 +176,16 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
                     StoreFrame.displayError("A gyártó törlése során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
-        }.execute();         
+        }.execute();
     }
- 
+
     private void reloadManufacturers() {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
                 List<Manufacturer> manufacturers = DataSource.getInstance().getManufacturerController().getEntities();
                 ManufacturerTableModel.this.manufacturers.clear();
-               ManufacturerTableModel.this.manufacturers.addAll(manufacturers);
+                ManufacturerTableModel.this.manufacturers.addAll(manufacturers);
                 return null;
             }
 
@@ -172,8 +199,8 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
                 }
             }
         }.execute();
-    }    
-    
+    }
+
     private class ManufacturerCellEditorListener implements CellEditorListener {
 
         @Override
@@ -185,7 +212,7 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
         public void editingCanceled(ChangeEvent e) {
             refreshTimer.start();
         }
-    }    
+    }
 
     @Override
     public CellEditorListener getCellEditorListener() {
