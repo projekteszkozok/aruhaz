@@ -12,7 +12,7 @@ public class Store implements Entity {
     private String name;
     private String place;
  
-    public static final String[] fieldNames = new String[]{"Raktár"};
+    public static final String[] fieldNames = new String[]{"Raktár", "Hely"};
 
     public Integer getStoreId() {
         return storeId;
