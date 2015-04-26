@@ -24,7 +24,7 @@ public class EntityComboBoxModel<E extends Entity> extends DefaultComboBoxModel<
     
     public EntityComboBoxModel(EntityController<E> controller){
         this.controller = controller;
-        entities = new ArrayList<>();
+        entities = new ArrayList<E>();
         this.refreshInterval = 60 * 1000;
         this.refreshTimer = new Timer(refreshInterval, new ActionListener(){
 

@@ -29,7 +29,7 @@ public class CategoryController implements EntityController<Category>{
             resultSet.next();
             category.setCategoryId(resultSet.getInt(1));
             category.setName(resultSet.getString(2));
-            log.info("A táblában az azonosító alapján történő keresés sikeres volt. ResultSet: "+ resultSet.getInt(1) + " " + resultSet.getString(2));
+            log.debug("A táblában az azonosító alapján történő keresés sikeres volt. ResultSet: "+ resultSet.getInt(1) + " " + resultSet.getString(2));
         } catch (SQLException ex) {
             log.error("A táblában az ["+ entityId +"] azonosító alapján történő keresés során kivétel keletkezett", ex);
             throw new SQLException("A táblában az ["+ entityId +"] azonosító alapján történő keresés sikertelen volt");
@@ -47,7 +47,7 @@ public class CategoryController implements EntityController<Category>{
             resultSet.absolute(rowIndex + 1);
             category.setCategoryId(resultSet.getInt(1));
             category.setName(resultSet.getString(2));
-            log.info("A táblában a sorindex alapján történő keresés sikeres volt. ResultSet: "+ resultSet.getInt(1) + " " + resultSet.getString(2));
+            log.debug("A táblában a sorindex alapján történő keresés sikeres volt. ResultSet: "+ resultSet.getInt(1) + " " + resultSet.getString(2));
         } catch (SQLException ex) {
             log.error("A táblában a sorindex alapján történő keresés során kivétel keletkezett! ", ex);
             throw new SQLException("A táblában a sorindex alapján történő keresés sikertelen volt!");

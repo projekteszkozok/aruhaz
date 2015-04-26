@@ -72,19 +72,19 @@ public class StoreFrame extends JFrame{
         jTabbedPane = new JTabbedPane();
         getContentPane().add(jTabbedPane, BorderLayout.CENTER);
         jTabbedPane.addChangeListener(menuBar);
+  
+        storeTableModel = new StoreTableModel();
+        storeTable = new JTable(storeTableModel);
+        storeTable.setAutoCreateRowSorter(true);
+        storeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setCellEditorListener(storeTable, storeTableModel);        
         
         categoryTableModel = new CategoryTableModel();
         categoryTable = new JTable(categoryTableModel);
         categoryTable.setAutoCreateRowSorter(true);
         categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setCellEditorListener(categoryTable, categoryTableModel);
-         
-        storeTableModel = new StoreTableModel();
-        storeTable = new JTable(storeTableModel);
-        storeTable.setAutoCreateRowSorter(true);
-        storeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setCellEditorListener(storeTable, storeTableModel);
-        
+              
         customerTableModel = new CustomerTableModel();
         customerTable = new JTable(customerTableModel);
         customerTable.setAutoCreateRowSorter(true);
@@ -95,15 +95,15 @@ public class StoreFrame extends JFrame{
         manufacturerTable = new JTable(manufacturerTableModel);
         manufacturerTable.setAutoCreateRowSorter(true);
         manufacturerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        manufacturerTable.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getManufacturerController()))));
+        manufacturerTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getStoreController()))));
         setCellEditorListener(manufacturerTable, manufacturerTableModel);
         
         productTableModel = new ProductTableModel();
         productTable = new JTable(productTableModel);
         productTable.setAutoCreateRowSorter(true);
         productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        productTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getManufacturerController()))));
-        productTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getCategoryController()))));        
+        productTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getManufacturerController()))));
+        productTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getCategoryController()))));        
         setCellEditorListener(productTable, productTableModel);        
         
         jTabbedPane.add("Bolt", new JScrollPane(storeTable));
