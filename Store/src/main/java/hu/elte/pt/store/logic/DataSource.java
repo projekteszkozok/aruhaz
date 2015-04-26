@@ -202,7 +202,7 @@ public class DataSource {
     
     public int addOrder() throws SQLException{
         orderController.addNewEntity();
-        return getCategories().size() - 1;
+        return getOrders().size() - 1;
     }
     
     public void deleteOrder(int index) throws SQLException{

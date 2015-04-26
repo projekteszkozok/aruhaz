@@ -8,8 +8,9 @@ import java.util.List;
  * Az entitásokhoz tartozó controller-ek megvalósítják ezt az interfészt.
  * Az interfész leírja a controllerek megvalósítandó metódusait.
  * @author Nagy Krisztián
+ * @param <E> Entitás, mely implementálja az Entity interfészt.
  */
-interface EntityController <E extends Entity>{
+public interface EntityController <E extends Entity>{
     /**
      * Egy olyan metódus, amely a paraméterben megadott azonosító alapján visszaadja a megfelelő entitást az adatbázisból.
      * @param entityId az entitás azonosítója, ami alapján keresni szeretnénk. Az entitáshoz tartozó tábla elsődleges kulcsú attribútumára vonatkozó keresés. 
