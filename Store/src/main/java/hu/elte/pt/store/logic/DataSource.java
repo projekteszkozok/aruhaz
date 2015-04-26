@@ -132,7 +132,7 @@ public class DataSource {
 
     public int addCustomer() throws SQLException {
         customerController.addNewEntity();
-        return getManufacturers().size() - 1;
+        return getCustomers().size() - 1;
     }
 
     public void deleteCustomer(int index) throws SQLException {
@@ -150,7 +150,7 @@ public class DataSource {
 
     public int addStore() throws SQLException {
         storeController.addNewEntity();
-        return getManufacturers().size() - 1;
+        return getStores().size() - 1;
     }
 
     public void deleteStore(int index) throws SQLException {
