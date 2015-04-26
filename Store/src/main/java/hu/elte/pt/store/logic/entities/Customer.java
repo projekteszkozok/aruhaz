@@ -1,4 +1,3 @@
-
 package hu.elte.pt.store.logic.entities;
 
 import java.util.Objects;
