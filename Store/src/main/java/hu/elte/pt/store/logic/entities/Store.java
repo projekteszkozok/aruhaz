@@ -70,7 +70,7 @@ public class Store implements Entity {
 
     @Override
     public String toString() {
-        return "Store{" + "storeId=" + storeId + "," + "name=" + name + "," + "place=" + place + '}';
+        return name + " : " + place;
     }
     
 }
