@@ -3,11 +3,13 @@ package hu.elte.pt.store.logic;
 import hu.elte.pt.store.logic.controllers.CategoryController;
 import hu.elte.pt.store.logic.controllers.CustomerController;
 import hu.elte.pt.store.logic.controllers.ManufacturerController;
+import hu.elte.pt.store.logic.controllers.OrderController;
 import hu.elte.pt.store.logic.controllers.ProductController;
 import hu.elte.pt.store.logic.controllers.StoreController;
 import hu.elte.pt.store.logic.entities.Category;
 import hu.elte.pt.store.logic.entities.Customer;
 import hu.elte.pt.store.logic.entities.Manufacturer;
+import hu.elte.pt.store.logic.entities.Order;
 import hu.elte.pt.store.logic.entities.Product;
 import hu.elte.pt.store.logic.entities.Store;
 import java.sql.Connection;
@@ -33,6 +35,7 @@ public class DataSource {
     private final CustomerController customerController;    
     private final StoreController storeController;
     private final ProductController productController;
+    private final OrderController orderController;
     
     private DataSource(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("store-config.xml");
@@ -49,6 +52,7 @@ public class DataSource {
         customerController = new CustomerController();
         storeController = new StoreController();
         productController = new ProductController();
+        orderController = new OrderController();
     }
     
     public Connection getConnection() throws SQLException{
@@ -73,6 +77,10 @@ public class DataSource {
     
     public ProductController getProductController() {
         return productController;
+    }
+    
+    public OrderController getOrderController(){
+        return orderController;
     }
     
     public static DataSource getInstance(){
@@ -185,5 +193,23 @@ public class DataSource {
 
     public void updateProduct(final Product product, final int rowIndex) throws SQLException {
         productController.updateEntity(product, rowIndex);
+    }
+    
+    //Order
+    public List<Order> getOrders() throws SQLException {
+        return orderController.getEntities();
+    }    
+    
+    public int addOrder() throws SQLException{
+        categoryController.addNewEntity();
+        return getCategories().size() - 1;
+    }
+    
+    public void deleteOrder(int index) throws SQLException{
+        categoryController.deleteEntity(index);
+    }
+    
+    public void updateOrder(final Category category, final int rowIndex) throws SQLException{
+        categoryController.updateEntity(category, rowIndex);
     }
 }
