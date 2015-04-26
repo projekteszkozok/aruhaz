@@ -60,11 +60,14 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        if (columnIndex == 0) {
-            return getStoreAtRow(rowIndex).getName();
-        } else {
-            return getStoreAtRow(rowIndex).getPlace();
+        switch (columnIndex) {
+            case 0:
+                return getStoreAtRow(rowIndex).getName();
+            case 1:
+                return getStoreAtRow(rowIndex).getPlace();
         }
+
+        return 0;
     }
 
     @Override
