@@ -146,7 +146,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateString("CONTACT_NAME", "CONTACT_NAME");
             resultSet.updateString("CITY", "CITY");
             resultSet.updateString("PHONE", "PHONE");
-            resultSet.updateInt("STORE", 0);
+            resultSet.updateInt("STORE", DataSource.getInstance().getStoreController().getEntityById(0).getStoreId());
             resultSet.insertRow();
             log.info("Az új gyártó létrehozása sikeres volt.");
         } catch (SQLException ex) {
