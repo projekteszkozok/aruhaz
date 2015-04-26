@@ -2,6 +2,7 @@ package hu.elte.pt.store.logic.controllers;
 
 import hu.elte.pt.store.logic.DataSource;
 import hu.elte.pt.store.logic.entities.Manufacturer;
+import hu.elte.pt.store.logic.entities.Store;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +13,6 @@ import org.apache.log4j.Logger;
 
 /**
  * Manufacturer controller osztálya
- *
  * @author Honti Dora
  */
 public class ManufacturerController implements EntityController<Manufacturer> {
@@ -34,7 +34,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             manufacturer.setContactName(resultSet.getString(3));
             manufacturer.setCity(resultSet.getString(4));
             manufacturer.setPhone(resultSet.getString(5));
-            manufacturer.setStore(resultSet.getInt(6));
+            manufacturer.setStore((Store) resultSet.getObject(6));
             log.info("A táblában az azonosító alapján történő keresés sikeres volt. "
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "
@@ -64,7 +64,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             manufacturer.setContactName(resultSet.getString(3));
             manufacturer.setCity(resultSet.getString(4));
             manufacturer.setPhone(resultSet.getString(5));
-            manufacturer.setStore(resultSet.getInt(6));
+            manufacturer.setStore((Store) resultSet.getObject(6));
 
             log.info("A táblában a sorindex alapján történő keresés sikeres volt."
                     + "ResultSet: "
@@ -111,7 +111,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateString("CONTACT_NAME", entity.getContactName());
             resultSet.updateString("CITY", entity.getCity());
             resultSet.updateString("PHONE", entity.getPhone());
-            resultSet.updateInt("STORE", entity.getStore());
+            resultSet.updateObject("STORE", entity.getStore());
 
             resultSet.updateRow();
             log.info("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
@@ -179,7 +179,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
                 manufacturer.setContactName(rs.getString(3));
                 manufacturer.setCity(rs.getString(4));
                 manufacturer.setPhone(rs.getString(5));
-                manufacturer.setStore(rs.getInt(6));
+                manufacturer.setStore((Store) rs.getObject(6));
                 manufacturers.add(manufacturer);
             }
         }

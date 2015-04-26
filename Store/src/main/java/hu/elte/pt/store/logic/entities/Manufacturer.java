@@ -13,7 +13,7 @@ public class Manufacturer implements Entity {
     private String contactName;
     private String city;
     private String phone;
-    private Integer store;
+    private Store store;
 
    public static final String[] fieldNames = new String[]{"Gyártó", "Kapcsolattartó", "Telephely", "Telefonszám", "Raktár"};
 
@@ -57,11 +57,11 @@ public class Manufacturer implements Entity {
         this.phone = phone;
     }
 
-    public Integer getStore() {
+    public Store getStore() {
         return store;
     }
 
-    public void setStore(Integer store) {
+    public void setStore(Store store) {
         this.store = store;
     }
 

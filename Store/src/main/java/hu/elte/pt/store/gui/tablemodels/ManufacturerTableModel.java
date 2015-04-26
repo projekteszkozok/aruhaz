@@ -3,6 +3,7 @@ package hu.elte.pt.store.gui.tablemodels;
 import hu.elte.pt.store.gui.StoreFrame;
 import hu.elte.pt.store.logic.DataSource;
 import hu.elte.pt.store.logic.entities.Manufacturer;
+import hu.elte.pt.store.logic.entities.Store;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -88,7 +89,7 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
         manufacturer.setContactName((String) aValue);
         manufacturer.setCity((String) aValue);
         manufacturer.setPhone((String) aValue);
-        manufacturer.setStore((Integer) aValue);
+        manufacturer.setStore((Store) aValue);
 
         new SwingWorker<Void, Void>() {
             @Override
