@@ -181,6 +181,8 @@ public class ManufacturerController implements EntityController<Manufacturer> {
     @Override
     public List<Manufacturer> getEntities() throws SQLException {
         List<Manufacturer> manufacturers = new ArrayList<>();
+        int storeId;
+
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement stmt = connection.createStatement();
@@ -192,10 +194,14 @@ public class ManufacturerController implements EntityController<Manufacturer> {
                 manufacturer.setContactName(rs.getString(3));
                 manufacturer.setCity(rs.getString(4));
                 manufacturer.setPhone(rs.getString(5));
-                manufacturer.setStore((Store) rs.getObject(6));
+                storeId = rs.getInt(6);
+                Store store = DataSource.getInstance().getStoreController().getEntityById(storeId);
+                manufacturer.setStore(store);
+
                 manufacturers.add(manufacturer);
             }
         }
+
         return manufacturers;
     }
 }
