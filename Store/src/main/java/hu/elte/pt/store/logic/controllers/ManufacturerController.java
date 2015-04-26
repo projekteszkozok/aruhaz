@@ -39,7 +39,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             manufacturer.setPhone(resultSet.getString(5));
             storeId = resultSet.getInt(6);
 
-            log.info("A táblában az azonosító alapján történő keresés sikeres volt. "
+            log.debug("A táblában az azonosító alapján történő keresés sikeres volt. "
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "
                     + resultSet.getString(2) + " "
@@ -75,7 +75,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             manufacturer.setPhone(resultSet.getString(5));
             storeId = resultSet.getInt(6);
 
-            log.info("A táblában a sorindex alapján történő keresés sikeres volt."
+            log.debug("A táblában a sorindex alapján történő keresés sikeres volt."
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "
                     + resultSet.getString(2) + " "
@@ -127,7 +127,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateInt("STORE", entity.getStore().getStoreId());
 
             resultSet.updateRow();
-            log.info("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
+            log.debug("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
         } catch (SQLException ex) {
             log.error("A táblában található" + entity.getManufacturerId() + " azonosíítóval rendelkező sor módosítása során kivétel keletkezett!", ex);
             throw new SQLException("A táblában található" + entity.getManufacturerId() + " azonosíítóval rendelkező sor módosítása sikertelen volt!");
@@ -148,7 +148,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateString("PHONE", "PHONE");
             resultSet.updateInt("STORE", DataSource.getInstance().getStores().get(0).getStoreId());
             resultSet.insertRow();
-            log.info("Az új gyártó létrehozása sikeres volt.");
+            log.debug("Az új gyártó létrehozása sikeres volt.");
         } catch (SQLException ex) {
             log.error("A táblán történő új sor létrehozása során kivétel keletkezett! ", ex);
             throw new SQLException("Nem sikerült új sort létrehozni a táblában!");
@@ -171,7 +171,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.absolute(rowIndex + 1);
             resultSet.deleteRow();
-            log.info("A kiválasztott [ " + rowIndex + " ] sorindex-ű elem törlése sikeres volt");
+            log.debug("A kiválasztott [ " + rowIndex + " ] sorindex-ű elem törlése sikeres volt");
         } catch (SQLException ex) {
             log.error("A kiválasztott [ " + rowIndex + " ] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg! ", ex);
             throw new SQLException("A kiválasztott [ " + rowIndex + " ] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg!");
