@@ -32,7 +32,7 @@ public class DataSource {
     private final ManufacturerController manufacturerController;
     private final CustomerController customerController;    
     private final StoreController storeController;
-     private final ProductController productController;
+    private final ProductController productController;
     
     private DataSource(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("store-config.xml");

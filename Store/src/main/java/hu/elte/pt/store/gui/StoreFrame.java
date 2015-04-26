@@ -1,7 +1,10 @@
 package hu.elte.pt.store.gui;
 
 import hu.elte.pt.store.gui.tablemodels.CategoryTableModel;
+import hu.elte.pt.store.gui.tablemodels.CustomerTableModel;
 import hu.elte.pt.store.gui.tablemodels.EntityHandlerTableModel;
+import hu.elte.pt.store.gui.tablemodels.ManufacturerTableModel;
+import hu.elte.pt.store.gui.tablemodels.ProductTableModel;
 import hu.elte.pt.store.gui.tablemodels.StoreTableModel;
 import hu.elte.pt.store.logic.DataSource;
 import java.awt.BorderLayout;
@@ -38,9 +41,12 @@ public class StoreFrame extends JFrame{
     }
     
     private final JTabbedPane jTabbedPane;
-    private final JTable categoryTable, storeTable;
+    private final JTable categoryTable, storeTable, customerTable, manufacturerTable, productTable;
     private final CategoryTableModel categoryTableModel;
     private final StoreTableModel storeTableModel;
+    private final CustomerTableModel customerTableModel;
+    private final ManufacturerTableModel manufacturerTableModel;
+    private final ProductTableModel productTableModel;
     
     public StoreFrame(){
         try {
@@ -75,9 +81,30 @@ public class StoreFrame extends JFrame{
         storeTable.setAutoCreateRowSorter(true);
         storeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setCellEditorListener(storeTable, storeTableModel);
-               
-        jTabbedPane.add("Kategória", new JScrollPane(categoryTable));
-        jTabbedPane.add("Raktár", new JScrollPane(storeTable));
+        
+        customerTableModel = new CustomerTableModel();
+        customerTable = new JTable(customerTableModel);
+        customerTable.setAutoCreateRowSorter(true);
+        customerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setCellEditorListener(customerTable, customerTableModel);
+        
+        manufacturerTableModel = new ManufacturerTableModel();
+        manufacturerTable = new JTable(manufacturerTableModel);
+        manufacturerTable.setAutoCreateRowSorter(true);
+        manufacturerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setCellEditorListener(manufacturerTable, manufacturerTableModel);
+        
+        productTableModel = new ProductTableModel();
+        productTable = new JTable(productTableModel);
+        productTable.setAutoCreateRowSorter(true);
+        productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setCellEditorListener(productTable, productTableModel);        
+        
+        jTabbedPane.add("Bolt", new JScrollPane(storeTable));
+        jTabbedPane.add("Vásárló", new JScrollPane(customerTable));
+        jTabbedPane.add("Termék", new JScrollPane(productTable));
+        jTabbedPane.add("Gyártó", new JScrollPane(manufacturerTable));
+        jTabbedPane.add("Kategória", new JScrollPane(categoryTable));     
         
     }
     
@@ -126,6 +153,60 @@ public class StoreFrame extends JFrame{
         }
         
     };    
+ 
+    private final Action newCustomerAction = new AbstractAction("Vásárló hozzáadása"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            customerTableModel.addNewEntity();
+        }
+        
+    };    
+    
+    private final Action deleteCustomerAction = new AbstractAction("Vásárló törlése"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            deleteRowsFromTable(customerTable, customerTableModel);
+        }
+        
+    };    
+    
+    private final Action newManufacturerAction = new AbstractAction("Gyártó hozzáadása"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            manufacturerTableModel.addNewEntity();
+        }
+        
+    };    
+    
+    private final Action deleteManufacturerAction = new AbstractAction("Gyártó törlése"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            deleteRowsFromTable(manufacturerTable, manufacturerTableModel);
+        }
+        
+    };      
+    
+    private final Action newProductAction = new AbstractAction("Termék hozzáadása"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            productTableModel.addNewEntity();
+        }
+        
+    };    
+    
+    private final Action deleteProductAction = new AbstractAction("Termék törlése"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            deleteRowsFromTable(productTable, productTableModel);
+        }
+        
+    };    
     
     private void deleteRowsFromTable(JTable table, EntityHandlerTableModel tableModel) {
         int[] selectedRows = table.getSelectedRows();
@@ -144,16 +225,30 @@ public class StoreFrame extends JFrame{
     
     private class StoreMenuBar extends JMenuBar implements ChangeListener{
         
-        private final JMenu categoryMenu, storeMenu;
+        private final JMenu categoryMenu, storeMenu, customerMenu, productMenu, manufacturerMenu;
         
         public StoreMenuBar(){
+            storeMenu = new JMenu("Bolt");
+            storeMenu.add(newStoreAction);
+            storeMenu.add(deleteStoreAction);
+            
+            customerMenu = new JMenu("Vásárló");
+            customerMenu.add(newCustomerAction);
+            customerMenu.add(deleteCustomerAction);
+            
+            productMenu = new JMenu("Termék");
+            productMenu.add(newProductAction);
+            productMenu.add(deleteProductAction);
+            
+            manufacturerMenu = new JMenu("Gyártó");
+            manufacturerMenu.add(newManufacturerAction);
+            manufacturerMenu.add(deleteManufacturerAction);
+            
             categoryMenu = new JMenu("Kategória");
             categoryMenu.add(newCategoryAction);
             categoryMenu.add(deleteCategoryAction);
             
-            storeMenu = new JMenu("Raktár");
-            storeMenu.add(newStoreAction);
-            storeMenu.add(deleteStoreAction);
+
             
         }
         
@@ -162,12 +257,22 @@ public class StoreFrame extends JFrame{
             removeAll();
             repaint();
             switch (jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())) {
+                case "Bolt":
+                    add(storeMenu);
+                    break; 
+                case "Vásárló":
+                    add(customerMenu);
+                    break;
+                case "Termék":
+                    add(productMenu);
+                    break;
+                case "Gyártó":
+                    add(manufacturerMenu);
+                    break;
                 case "Kategória":
                     add(categoryMenu);
                     break;
-                case "Raktár":
-                    add(storeMenu);
-                    break;
+
             }
 
         }
