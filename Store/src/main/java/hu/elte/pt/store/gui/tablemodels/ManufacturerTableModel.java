@@ -187,6 +187,7 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
         }
     }    
 
+    @Override
     public CellEditorListener getCellEditorListener() {
         return cellEditorListener;
     }
