@@ -137,13 +137,6 @@ public class Product implements Entity {
 
     @Override
     public String toString() {
-        return "Product{productID=" + productID
-                + ", productName=" + productName
-                + ", manufacturer=" + manufacturer
-                + ", description=" + description
-                + ", category=" + category
-                + ", price=" + price
-                + ", stock=" + stock
-                + ", isActive=" + isActive + '}';
+        return productName;
     }
 }
