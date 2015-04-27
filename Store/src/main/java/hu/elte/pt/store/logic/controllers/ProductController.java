@@ -97,7 +97,7 @@ public class ProductController implements EntityController<Product> {
                     + resultSet.getBoolean(8)
             );
         } catch (SQLException ex) {
-            log.error("A táblában a sorindex alapján történő keresés során kivétel keletkezett! ", ex);
+            log.error("A táblában a sorindex alapján történő keresés során kivétel keletkezett!", ex);
             throw new SQLException("A táblában a sorindex alapján történő keresés sikertelen volt!");
         }
 
@@ -120,7 +120,7 @@ public class ProductController implements EntityController<Product> {
             productCount = resultSet.getInt("CNT");
             log.debug("A táblában fellelhető sorok számlálása sikeresen lezajlott " + productCount + " értékkel.");
         } catch (SQLException ex) {
-            log.error("A táblában fellelhető sorok számlálásának lekérdezése során kivétel keletkezett! ", ex);
+            log.error("A táblában fellelhető sorok számlálásának lekérdezése során kivétel keletkezett!", ex);
             throw new SQLException("A táblában fellelhető sorok számlálásának lekérdezése során kivétel keletkezett!");
         }
         return productCount;
@@ -143,7 +143,10 @@ public class ProductController implements EntityController<Product> {
             resultSet.updateBoolean("ACTIVE", entity.isActive());
             resultSet.updateRow();
 
-            log.info("A(z) (" + entity.getProductID() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getProductName() + " lett.");
+            log.info("A(z) (" + entity.getProductID() + ") azonosítójú sor sikeresen módosult. "
+                    + "A termék új adatai: " + entity.getProductName() + " " + entity.getCategory().getName()
+                    + " (" + entity.getDescription() + "), Gyártó: " + entity.getManufacturer().getName()
+                    + ", Ár: " + entity.getPrice() + " Forint, Raktárkészlet: " + entity.getStock());
         } catch (SQLException ex) {
             log.error("A táblában található" + entity.getProductID() + " azonosíítóval rendelkező sor módosítása során kivétel keletkezett!", ex);
             throw new SQLException("A táblában található" + entity.getProductID() + " azonosíítóval rendelkező sor módosítása sikertelen volt!");
@@ -158,9 +161,9 @@ public class ProductController implements EntityController<Product> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
             resultSet.updateInt("PRODUCT_ID", DataSource.getInstance().obtainNewId());
-            resultSet.updateString("NAME", "<new product");
+            resultSet.updateString("NAME", "<új termék>");
             resultSet.updateInt("MANUFACTURER_ID", DataSource.getInstance().getManufacturers().get(0).getManufacturerId());
-            resultSet.updateString("DESCRIPTION", "<description>");
+            resultSet.updateString("DESCRIPTION", "<leírás>");
             resultSet.updateInt("CATEGORY_ID", DataSource.getInstance().getCategories().get(0).getCategoryId());
             resultSet.updateInt("PRICE", 0);
             resultSet.updateInt("STOCK", 0);
@@ -189,10 +192,10 @@ public class ProductController implements EntityController<Product> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.absolute(rowIndex + 1);
             resultSet.deleteRow();
-            log.info("A kiválasztott [ " + rowIndex + " ] sorindex-ű elem törlése sikeres volt");
+            log.info("A kiválasztott [" + rowIndex + "] sorindex-ű elem törlése sikeres volt");
         } catch (SQLException ex) {
-            log.error("A kiválasztott [ " + rowIndex + " ] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg! ", ex);
-            throw new SQLException("A kiválasztott [ " + rowIndex + " ] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg!");
+            log.error("A kiválasztott [" + rowIndex + "] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg! ", ex);
+            throw new SQLException("A kiválasztott [" + rowIndex + "] sorindex-ű elem törlése során kivétel keletkezett, így a törlés nem valósult meg!");
         }
     }
 
