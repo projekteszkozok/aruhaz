@@ -2,6 +2,8 @@ package hu.elte.pt.store.gui.tablemodels;
 
 import hu.elte.pt.store.gui.StoreFrame;
 import hu.elte.pt.store.logic.DataSource;
+import hu.elte.pt.store.logic.entities.Category;
+import hu.elte.pt.store.logic.entities.Manufacturer;
 import hu.elte.pt.store.logic.entities.Product;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,7 +61,24 @@ public class ProductTableModel extends AbstractTableModel implements EntityHandl
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return String.class;
+        switch (columnIndex) {
+            case 0:
+                return String.class;
+            case 1:
+                return Manufacturer.class;
+            case 2:
+                return String.class;
+            case 3:
+                return Category.class;
+            case 4:
+                return Integer.class;
+            case 5:
+                return Integer.class;
+            case 6:
+                return Boolean.class;
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -74,18 +93,32 @@ public class ProductTableModel extends AbstractTableModel implements EntityHandl
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        return getProductAtRow(rowIndex).getProductID();
-    }
-
-    private Product getProductAtRow(int rowIndex) {
-        return products.get(rowIndex);
-    }
-
-    @Override
     public void setValueAt(Object aValue, final int rowIndex, int columnIndex) {
         final Product product = getProductAtRow(rowIndex);
-        product.setProductName((String) aValue);
+
+        switch (columnIndex) {
+            case 0:
+                product.setProductName((String) aValue);
+                break;
+            case 1:
+                product.setManufacturer((Manufacturer) aValue);
+                break;
+            case 2:
+                product.setDescription((String) aValue);
+                break;
+            case 3:
+                product.setCategory((Category) aValue);
+                break;
+            case 4:
+                product.setPrice((Integer) aValue);
+                break;
+            case 5:
+                product.setStock((Integer) aValue);
+                break;
+            case 6:
+                product.setIsActive((Boolean) aValue);
+                break;
+        }
 
         new SwingWorker<Void, Void>() {
             @Override
@@ -104,6 +137,32 @@ public class ProductTableModel extends AbstractTableModel implements EntityHandl
                 }
             }
         }.execute();
+    }
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return getProductAtRow(rowIndex).getProductName();
+            case 1:
+                return getProductAtRow(rowIndex).getManufacturer().getName();
+            case 2:
+                return getProductAtRow(rowIndex).getDescription();
+            case 3:
+                return getProductAtRow(rowIndex).getCategory().getName();
+            case 4:
+                return getProductAtRow(rowIndex).getPrice();
+            case 5:
+                return getProductAtRow(rowIndex).getStock();
+            case 6:
+                return getProductAtRow(rowIndex).isActive();
+            default:
+                return null;
+        }
+    }
+
+    private Product getProductAtRow(int rowIndex) {
+        return products.get(rowIndex);
     }
 
     @Override
