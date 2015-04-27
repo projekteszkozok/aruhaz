@@ -50,7 +50,7 @@ public class OrderController implements EntityController<Order> {
 
             //When iterating the ResultSet you want to access the column values of each record.
             //We use column index instead of a column name.
-            log.info("A táblában az azonosító alapján történő keresés sikeres volt. "
+            log.debug("A táblában az azonosító alapján történő keresés sikeres volt. "
                     + "ResultSet: "
                     + resultSet.getInt(1) + " " //first column, you can add colname
                     + resultSet.getInt(2) + " "  //second column
@@ -87,7 +87,7 @@ public class OrderController implements EntityController<Order> {
             productID = resultSet.getInt(3);     
 
             
-            log.info("A táblában a sorindex alapján történő keresés sikeres volt."
+            log.debug("A táblában a sorindex alapján történő keresés sikeres volt."
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "
                     
@@ -138,9 +138,12 @@ public class OrderController implements EntityController<Order> {
             
             resultSet.updateRow();                                                           
             log.info("A(z) (" + entity.getOrderID() + ") azonosítójú sor sikeresen módosult.");
+            
+            
         } catch (SQLException ex) {
             log.error("A táblában található" + entity.getOrderID()+ " azonosíítóval rendelkező sor módosítása során kivétel keletkezett!", ex);
             throw new SQLException("A táblában található" + entity.getOrderID() + " azonosíítóval rendelkező sor módosítása sikertelen volt!");
+            
         }
     }
 
