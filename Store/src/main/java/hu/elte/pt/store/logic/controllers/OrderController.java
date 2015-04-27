@@ -131,8 +131,9 @@ public class OrderController implements EntityController<Order> {
             resultSet.absolute(rowIndex + 1);
         
             resultSet.updateInt(1, entity.getOrderID());
-            resultSet.updateObject(2, entity.getProduct());
-            resultSet.updateObject(3, entity.getCustomer());
+            resultSet.updateInt(2, entity.getProduct().getProductID());
+            resultSet.updateInt(3, entity.getCustomer().getCustomerID());
+
            
             
             resultSet.updateRow();                                                           
@@ -151,19 +152,20 @@ public class OrderController implements EntityController<Order> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
             resultSet.updateInt("ORDER_ID", DataSource.getInstance().obtainNewId());
-            
+            resultSet.updateInt("PRODUCT_ID", DataSource.getInstance().getProducts().get(0).getProductID());
+            resultSet.updateInt("CUSTOMER_ID", DataSource.getInstance().getCustomers().get(0).getCustomerID());
             
             resultSet.insertRow();
             log.info("Az új rendelés létrehozása sikeres volt.");
         } catch (SQLException ex) {
             log.error("A táblán történő új sor létrehozása során kivétel keletkezett! ", ex);
-            throw new SQLException("Nem sikerült új sort létrehozni a táblában!");
+            throw new SQLException("Nem sikerült új sort létrehozni a rendelés táblában!");
         }
 
         try {
             return getEntityCount() - 1;
         } catch (SQLException ex) {
-            log.error("A táblán történő új sor hozzáadása folyamán, az új sor indexének megállapítása közben kivétel váltódott ki!");
+            log.error("A rendelés táblán történő új sor hozzáadása folyamán, az új sor indexének megállapítása közben kivétel váltódott ki!");
             throw new SQLException("A táblán történő új sor hozzáadása folyamán, az új sor indexének megállapítása közben kivétel váltódott ki!");
         }
 
@@ -187,16 +189,25 @@ public class OrderController implements EntityController<Order> {
     @Override
     public List<Order> getEntities() throws SQLException {
         List<Order> orders = new ArrayList<>();
+        int productID;
+        int customerID;
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(FULL_SELECT_SQL)) {
             while (rs.next()) {
                 Order order = new Order();
+                
                 order.setOrderID(rs.getInt(1));
-                order.setProduct((Product) rs.getObject(2));
-                order.setCustomer((Customer) rs.getObject(3));
- 
+          
+                productID = rs.getInt(2);
+                Product product = DataSource.getInstance().getProductController().getEntityById(productID);
+                order.setProduct(product);
+                
+                customerID = rs.getInt(3);
+                Customer customer = DataSource.getInstance().getCustomerController().getEntityById(customerID);
+                order.setCustomer(customer);
+
                 orders.add(order);
             }
         }
