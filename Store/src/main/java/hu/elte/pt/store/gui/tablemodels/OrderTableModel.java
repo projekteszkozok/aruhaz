@@ -5,7 +5,6 @@ import hu.elte.pt.store.logic.DataSource;
 import hu.elte.pt.store.logic.entities.Customer;
 import hu.elte.pt.store.logic.entities.Order;
 import hu.elte.pt.store.logic.entities.Product;
-import hu.elte.pt.store.logic.entities.Store;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -64,11 +63,10 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return getOrderAtRow(rowIndex).getProduct();
+                return getOrderAtRow(rowIndex).getProduct().getProductName();
             case 1:
-                return getOrderAtRow(rowIndex).getProduct();
-            case 2:
-                return getOrderAtRow(rowIndex).getCustomer();
+                return getOrderAtRow(rowIndex).getCustomer().getName();
+                
             default:
                 return null;
         }
@@ -78,15 +76,9 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return String.class;
+                return Product.class;
             case 1:
-                return String.class;
-            case 2:
-                return String.class;
-            case 3:
-                return String.class;
-            case 4:
-                return Store.class;
+                return Customer.class;
             default:
                 return null;
         }
@@ -112,12 +104,9 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
         final Order order = getOrderAtRow(rowIndex);
         switch (columnIndex) {
             case 0:
-                order.setOrderID((Integer) aValue);
-            case 1:
                 order.setProduct((Product) aValue);
-            case 2:
+            case 1:
                 order.setCustomer((Customer) aValue);
-
         }
 
         new SwingWorker<Void, Void>() {
@@ -133,7 +122,7 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
                     get();
                     reloadOrders();
                 } catch (InterruptedException | ExecutionException ex) {
-                    StoreFrame.displayError("Az új gyártó hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
+                    StoreFrame.displayError("Az új rendelés hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
         }.execute();
@@ -144,7 +133,7 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                DataSource.getInstance().addOrder();    //
+                DataSource.getInstance().addOrder();
                 return null;
             }
 
@@ -154,7 +143,7 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
                     get();
                     reloadOrders();
                 } catch (InterruptedException | ExecutionException ex) {
-                    StoreFrame.displayError("Az új gyártó hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
+                    StoreFrame.displayError("Az új rendelés hozzáadása során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
         }.execute();
@@ -175,7 +164,7 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
                     get();
                     reloadOrders();
                 } catch (InterruptedException | ExecutionException ex) {
-                    StoreFrame.displayError("A gyártó törlése során kivétel keletkezett, így a művelet sikertelen volt!");
+                    StoreFrame.displayError("A rendelés törlése során kivétel keletkezett, így a művelet sikertelen volt!");
                 }
             }
         }.execute();
@@ -197,7 +186,7 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
                     get();
                     fireTableDataChanged();
                 } catch (InterruptedException | ExecutionException ex) {
-                    StoreFrame.displayError("Hiba történt a gyártók újratöltése során!");
+                    StoreFrame.displayError("Hiba történt a rendelések újratöltése során!");
                 }
             }
         }.execute();
