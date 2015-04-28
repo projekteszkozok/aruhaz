@@ -109,6 +109,6 @@ public class Manufacturer implements Entity {
 
     @Override
     public String toString() {
-        return "Manufacturer{" + "manufacturerId=" + manufacturerId + ", name=" + name + ", contactName=" + contactName + ", city=" + city + ", phone=" + phone + ", store=" + store + '}';
+        return name;
     }
 }
