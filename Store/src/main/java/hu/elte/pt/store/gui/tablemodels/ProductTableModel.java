@@ -89,7 +89,12 @@ public class ProductTableModel extends AbstractTableModel implements EntityHandl
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         refreshTimer.stop();
-        return true;
+        if (columnIndex == 6) {
+            return true;
+        } else {
+            Product product = getProductAtRow(rowIndex);
+            return product.isActive();
+        }
     }
 
     @Override
