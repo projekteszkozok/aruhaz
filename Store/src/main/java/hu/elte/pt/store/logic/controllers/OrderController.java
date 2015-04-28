@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 public class OrderController implements EntityController<Order> {
 
     private static final Logger log = Logger.getLogger(OrderController.class);
-    private final String TABLE_NAME = "ORDER";
+    private final String TABLE_NAME = "\"ORDER\"";
     private final String FULL_SELECT_SQL = "SELECT * FROM " + TABLE_NAME;      //select all data from a database
 
     
@@ -111,7 +111,7 @@ public class OrderController implements EntityController<Order> {
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS CNT FROM ORDER");) {
+                ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS CNT FROM \"ORDER\"");) {
             resultSet.next();
             orderCount = resultSet.getInt("CNT");
             log.debug("A táblában fellelhető sorok számlálása sikeresen lezajlott " + orderCount + " értékkel.");
