@@ -45,7 +45,7 @@ public class StoreTableModel extends AbstractTableModel implements EntityHandler
     @Override
     public int getRowCount() {
         try {
-            return DataSource.getInstance().getCategoryController().getEntityCount();
+            return DataSource.getInstance().getStoreController().getEntityCount();
         } catch (SQLException ex) {
             StoreFrame.displayError(ex.getMessage());
             return 0;
