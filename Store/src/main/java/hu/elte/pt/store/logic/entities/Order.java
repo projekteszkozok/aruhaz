@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class Order implements Entity {
 
-    public final static String[] fieldNames = new String[]{"PRODUCT_ID", "CUSTOMER_ID"};
+    public final static String[] fieldNames = new String[]{"Termék", "Vásárló"};
     
     private Integer orderID;
     //private Product productsID;
