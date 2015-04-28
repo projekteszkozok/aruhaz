@@ -5,6 +5,7 @@ import hu.elte.pt.store.gui.tablemodels.CategoryTableModel;
 import hu.elte.pt.store.gui.tablemodels.CustomerTableModel;
 import hu.elte.pt.store.gui.tablemodels.EntityHandlerTableModel;
 import hu.elte.pt.store.gui.tablemodels.ManufacturerTableModel;
+import hu.elte.pt.store.gui.tablemodels.OrderTableModel;
 import hu.elte.pt.store.gui.tablemodels.ProductTableModel;
 import hu.elte.pt.store.gui.tablemodels.StoreTableModel;
 import hu.elte.pt.store.logic.DataSource;
@@ -44,12 +45,13 @@ public class StoreFrame extends JFrame{
     }
     
     private final JTabbedPane jTabbedPane;
-    private final JTable categoryTable, storeTable, customerTable, manufacturerTable, productTable;
+    private final JTable categoryTable, storeTable, customerTable, manufacturerTable, productTable, orderTable;
     private final CategoryTableModel categoryTableModel;
     private final StoreTableModel storeTableModel;
     private final CustomerTableModel customerTableModel;
     private final ManufacturerTableModel manufacturerTableModel;
     private final ProductTableModel productTableModel;
+    private final OrderTableModel orderTableModel;
     
     public StoreFrame(){
         try {
@@ -73,23 +75,31 @@ public class StoreFrame extends JFrame{
         getContentPane().add(jTabbedPane, BorderLayout.CENTER);
         jTabbedPane.addChangeListener(menuBar);
   
+        orderTableModel = new OrderTableModel();
+        orderTable = new JTable(orderTableModel);
+        orderTable.setAutoCreateRowSorter(true);
+        orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setCellEditorListener(orderTable, orderTableModel);
+        
         storeTableModel = new StoreTableModel();
         storeTable = new JTable(storeTableModel);
         storeTable.setAutoCreateRowSorter(true);
         storeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setCellEditorListener(storeTable, storeTableModel);        
-        
-        categoryTableModel = new CategoryTableModel();
-        categoryTable = new JTable(categoryTableModel);
-        categoryTable.setAutoCreateRowSorter(true);
-        categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setCellEditorListener(categoryTable, categoryTableModel);
               
         customerTableModel = new CustomerTableModel();
         customerTable = new JTable(customerTableModel);
         customerTable.setAutoCreateRowSorter(true);
         customerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setCellEditorListener(customerTable, customerTableModel);
+
+        productTableModel = new ProductTableModel();
+        productTable = new JTable(productTableModel);
+        productTable.setAutoCreateRowSorter(true);
+        productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        productTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getManufacturerController()))));
+        productTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getCategoryController()))));        
+        setCellEditorListener(productTable, productTableModel);           
         
         manufacturerTableModel = new ManufacturerTableModel();
         manufacturerTable = new JTable(manufacturerTableModel);
@@ -98,14 +108,13 @@ public class StoreFrame extends JFrame{
         manufacturerTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getStoreController()))));
         setCellEditorListener(manufacturerTable, manufacturerTableModel);
         
-        productTableModel = new ProductTableModel();
-        productTable = new JTable(productTableModel);
-        productTable.setAutoCreateRowSorter(true);
-        productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        productTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getManufacturerController()))));
-        productTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getCategoryController()))));        
-        setCellEditorListener(productTable, productTableModel);        
+        categoryTableModel = new CategoryTableModel();
+        categoryTable = new JTable(categoryTableModel);
+        categoryTable.setAutoCreateRowSorter(true);
+        categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setCellEditorListener(categoryTable, categoryTableModel);        
         
+        jTabbedPane.add("Rendelés", new JScrollPane(orderTable));
         jTabbedPane.add("Bolt", new JScrollPane(storeTable));
         jTabbedPane.add("Vásárló", new JScrollPane(customerTable));
         jTabbedPane.add("Termék", new JScrollPane(productTable));
@@ -123,6 +132,24 @@ public class StoreFrame extends JFrame{
             }
         }
     }
+  
+    private final Action newOrderAction = new AbstractAction("Rendelés hozzáadása"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            orderTableModel.addNewEntity();
+        }
+        
+    };    
+    
+    private final Action deleteOrderAction = new AbstractAction("Rendelés törlése"){
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            deleteRowsFromTable(orderTable, orderTableModel);
+        }
+        
+    };    
     
     private final Action newCategoryAction = new AbstractAction("Kategória hozzáadása"){
 
@@ -231,9 +258,14 @@ public class StoreFrame extends JFrame{
     
     private class StoreMenuBar extends JMenuBar implements ChangeListener{
         
-        private final JMenu categoryMenu, storeMenu, customerMenu, productMenu, manufacturerMenu;
+        private final JMenu orderMenu, storeMenu, customerMenu, productMenu, manufacturerMenu, categoryMenu;
         
         public StoreMenuBar(){
+            
+            orderMenu = new JMenu("Rendelés");
+            orderMenu.add(newOrderAction);
+            orderMenu.add(deleteOrderAction);
+            
             storeMenu = new JMenu("Bolt");
             storeMenu.add(newStoreAction);
             storeMenu.add(deleteStoreAction);
@@ -263,6 +295,9 @@ public class StoreFrame extends JFrame{
             removeAll();
             repaint();
             switch (jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())) {
+                case "Rendelés":
+                    add(orderMenu);
+                    break;
                 case "Bolt":
                     add(storeMenu);
                     break; 
