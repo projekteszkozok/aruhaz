@@ -98,7 +98,7 @@ public class StoreController implements EntityController<Store> {
             resultSet.updateString(3, entity.getPlace());
 
             resultSet.updateRow();
-            log.info("A(z) (" + entity.getStoreId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
+            log.info("A(z) (" + entity.getStoreId() + ") azonosítójú sor sikeresen módosult. Az új név: " + entity.getName() + ", hely: " + entity.getPlace() + " lett.");
         } catch (SQLException ex) {
             log.error("A táblában található" + entity.getStoreId() + " azonosíítóval rendelkező sor módosítása során kivétel keletkezett!", ex);
             throw new SQLException("A táblában található" + entity.getStoreId() + " azonosíítóval rendelkező sor módosítása sikertelen volt!");
