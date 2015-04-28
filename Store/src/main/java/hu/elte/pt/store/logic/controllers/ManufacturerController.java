@@ -127,7 +127,8 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateInt("STORE_ID", entity.getStore().getStoreId());
 
             resultSet.updateRow();
-            log.info("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új NAME: " + entity.getName() + " lett.");
+            
+            log.info("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új név: " + entity.getName() + ", kapcsolattartó: " + entity.getContactName() + ", telephely: " + entity.getCity() + ", telefonszám " + entity.getPhone()+ ", raktár " + entity.getStore().getName() + " lett.");
         } catch (SQLException ex) {
             log.error("A táblában található" + entity.getManufacturerId() + " azonosíítóval rendelkező sor módosítása során kivétel keletkezett!", ex);
             throw new SQLException("A táblában található" + entity.getManufacturerId() + " azonosíítóval rendelkező sor módosítása sikertelen volt!");
