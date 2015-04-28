@@ -137,7 +137,9 @@ public class OrderController implements EntityController<Order> {
            
             
             resultSet.updateRow();                                                           
-            log.info("A(z) (" + entity.getOrderID() + ") azonosítójú sor sikeresen módosult.");
+            log.info("A(z) (" + entity.getOrderID() + ") azonosítójú sor sikeresen módosult."
+                    + "Hozzáadott termék: " + entity.getProduct().getProductName() +
+                    " a hozzá tartozó vásárló neve: " + entity.getCustomer().getName() + " lett.");
             
             
         } catch (SQLException ex) {
