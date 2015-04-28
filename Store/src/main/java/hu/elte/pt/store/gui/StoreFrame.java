@@ -10,6 +10,8 @@ import hu.elte.pt.store.gui.tablemodels.ProductTableModel;
 import hu.elte.pt.store.gui.tablemodels.StoreTableModel;
 import hu.elte.pt.store.logic.DataSource;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import org.apache.log4j.Logger;
 
@@ -94,7 +97,24 @@ public class StoreFrame extends JFrame{
         setCellEditorListener(customerTable, customerTableModel);
 
         productTableModel = new ProductTableModel();
-        productTable = new JTable(productTableModel);
+        productTable = new JTable(productTableModel){
+
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component component = super.prepareRenderer(renderer, row, column);
+                int modelRow = productTable.convertRowIndexToModel(row);
+                boolean available = (Boolean) productTableModel.getValueAt(modelRow, 6);
+                if (!available) {
+                    component.setBackground(Color.ORANGE);
+                    component.setForeground(Color.GRAY);
+                } else {
+                    component.setBackground(Color.GREEN);
+                    component.setForeground(Color.BLACK);
+                }
+                return component;
+            }
+        
+        };
         productTable.setAutoCreateRowSorter(true);
         productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         productTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getManufacturerController()))));
