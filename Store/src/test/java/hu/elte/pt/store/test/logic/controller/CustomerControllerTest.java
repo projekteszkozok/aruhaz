@@ -36,6 +36,11 @@ public class CustomerControllerTest {
       customerController.deleteEntity(customerController.getEntityCount() + 1); 
     }
     
+    @Test(expected = Exception.class)
+    public void removeWithNegativeIndexTest() throws SQLException {
+      customerController.deleteEntity(-1); 
+    }
+    
     @Test
     public void entityPropertiesTest() throws SQLException {
         List<Customer> customers = customerController.getEntities();
@@ -48,6 +53,14 @@ public class CustomerControllerTest {
             Assert.assertNotNull(customer.getTelephone());
         }     
         
+    }
+    
+    @Test
+    public void getEntityTest() throws SQLException {
+        int numberOfEntities = customerController.getEntityCount();
+        for(int i = 0; i < numberOfEntities; i++){
+            Assert.assertNotNull(customerController.getEntityByRowIndex(i));
+        }
     }
     
     
