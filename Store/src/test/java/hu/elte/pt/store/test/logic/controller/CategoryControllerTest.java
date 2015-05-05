@@ -1,11 +1,6 @@
 package hu.elte.pt.store.test.logic.controller;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+import hu.elte.pt.store.gui.tablemodels.CategoryTableModel;
 import hu.elte.pt.store.logic.controllers.CategoryController;
 import hu.elte.pt.store.logic.entities.Category;
 import java.sql.SQLException;
@@ -20,6 +15,8 @@ import org.junit.Test;
  */
 public class CategoryControllerTest {
     
+    CategoryTableModel categoryTableModel = new CategoryTableModel();
+    
     public CategoryController categoryController = new CategoryController();
        
   
@@ -28,11 +25,13 @@ public class CategoryControllerTest {
       int initialNumberOfCategories = categoryController.getEntityCount();
       
       categoryController.addNewEntity();
-      Assert.assertEquals(initialNumberOfCategories + 1, categoryController.getEntityCount());      
+      Assert.assertEquals(initialNumberOfCategories + 1, categoryController.getEntityCount()); 
+       Assert.assertEquals(categoryTableModel.getRowCount(), categoryController.getEntityCount());
     
       int lastIndex = initialNumberOfCategories;
       categoryController.deleteEntity(lastIndex);
-      Assert.assertEquals(initialNumberOfCategories, categoryController.getEntityCount());          
+      Assert.assertEquals(initialNumberOfCategories, categoryController.getEntityCount()); 
+      Assert.assertEquals(categoryTableModel.getRowCount(), categoryController.getEntityCount());
          
     }
     
@@ -71,7 +70,8 @@ public class CategoryControllerTest {
         int numberOfEntities = categoryController.getEntityCount();        
         Assert.assertNotNull(categoryController.getEntityByRowIndex(numberOfEntities));      
   
-    }
+    }   
+    
    
    
 }   
