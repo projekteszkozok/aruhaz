@@ -1,5 +1,6 @@
 package hu.elte.pt.store.test.logic.controller;
 
+import hu.elte.pt.store.gui.tablemodels.StoreTableModel;
 import hu.elte.pt.store.logic.controllers.StoreController;
 import hu.elte.pt.store.logic.entities.Store;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import org.junit.Test;
  */
 public class StoreControllerTest {
 
+    StoreTableModel storeTableModel = new StoreTableModel();
     public StoreController storeController = new StoreController();
 
     @Test
@@ -21,10 +23,12 @@ public class StoreControllerTest {
 
         storeController.addNewEntity();
         Assert.assertEquals(initialNumberOfStores + 1, storeController.getEntityCount());
+        Assert.assertEquals(storeTableModel.getRowCount(), storeController.getEntityCount());
 
         int lastIndex = initialNumberOfStores;
         storeController.deleteEntity(lastIndex);
         Assert.assertEquals(initialNumberOfStores, storeController.getEntityCount());
+        Assert.assertEquals(storeTableModel.getRowCount(), storeController.getEntityCount());
 
     }
 
