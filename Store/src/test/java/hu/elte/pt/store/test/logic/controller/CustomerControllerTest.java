@@ -1,6 +1,7 @@
 package hu.elte.pt.store.test.logic.controller;
 
 
+import hu.elte.pt.store.gui.tablemodels.CustomerTableModel;
 import hu.elte.pt.store.logic.controllers.CustomerController;
 import hu.elte.pt.store.logic.entities.Customer;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import org.junit.Test;
  */
 public class CustomerControllerTest {
     
+    CustomerTableModel customerTableModel = new CustomerTableModel();    
     public CustomerController customerController = new CustomerController();
        
   
@@ -24,11 +26,13 @@ public class CustomerControllerTest {
       
       customerController.addNewEntity();
       Assert.assertEquals(initialNumberOfCustomers + 1, customerController.getEntityCount());      
-    
+      Assert.assertEquals(customerController.getEntityCount(), customerTableModel.getRowCount());
+      
       int lastIndex = initialNumberOfCustomers;
       customerController.deleteEntity(lastIndex);
-      Assert.assertEquals(initialNumberOfCustomers, customerController.getEntityCount());          
-         
+      Assert.assertEquals(initialNumberOfCustomers, customerController.getEntityCount());     
+      Assert.assertEquals(customerController.getEntityCount(), customerTableModel.getRowCount());
+              
     }
     
     @Test(expected = Exception.class)
