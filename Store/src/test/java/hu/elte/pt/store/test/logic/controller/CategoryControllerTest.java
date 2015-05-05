@@ -41,6 +41,12 @@ public class CategoryControllerTest {
       categoryController.deleteEntity(categoryController.getEntityCount() + 1); 
     }
     
+    @Test(expected = Exception.class)
+    public void removeWithNegativeIndexTest() throws SQLException {
+      categoryController.deleteEntity(-1); 
+    }
+    
+    
     @Test
     public void entityPropertiesTest() throws SQLException {
         List<Category> categories = categoryController.getEntities();
@@ -50,6 +56,14 @@ public class CategoryControllerTest {
             Assert.assertNotNull(category.getName());          
         }     
         
+    }
+    
+    @Test
+    public void getEntityTest() throws SQLException {
+        int numberOfEntities = categoryController.getEntityCount();
+        for(int i = 0; i < numberOfEntities; i++){
+            Assert.assertNotNull(categoryController.getEntityByRowIndex(i));
+        }
     }
    
 }   
