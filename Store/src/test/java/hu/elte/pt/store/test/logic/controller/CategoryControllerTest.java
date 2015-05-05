@@ -67,5 +67,4 @@ public class CategoryControllerTest {
         int numberOfEntities = categoryController.getEntityCount();
         Assert.assertNotNull(categoryController.getEntityByRowIndex(numberOfEntities));
     }
-
 }
