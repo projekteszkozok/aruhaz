@@ -17,8 +17,6 @@ public class CategoryTableModelTest {
 
     CategoryTableModel categoryTableModel = new CategoryTableModel();
 
-    public CategoryController categoryController = new CategoryController();
-    
     @Test
     public void columnTest(){
         int columnCount = categoryTableModel.getColumnCount();
@@ -35,7 +33,7 @@ public class CategoryTableModelTest {
         
         for(int i = 0; i < rowCount-1; i++){
             for(int j = 0; j < columnCount-1; j++){
-                Assert.assertNotNull(categoryTableModel.getValueAt(j, j));
+                Assert.assertNotNull(categoryTableModel.getValueAt(i, j));
             }
         }
     }
