@@ -27,11 +27,14 @@ public class CustomerTableModelTest {
         int rowCount = customerTableModel.getRowCount();
         int columnCount = customerTableModel.getColumnCount();
         
-        for(int i = 0; i < rowCount-1; i++){
-            for(int j = 0; j < columnCount-1; j++){
-                Assert.assertNotNull(customerTableModel.getValueAt(i, j));
+        if(rowCount > 1 && columnCount > 1){
+            
+            for(int j = 1; j < columnCount-1; j++){
+                Assert.assertNotNull(customerTableModel.getColumnName(j));
             }
+        
         }
+        
     }
 
 }
