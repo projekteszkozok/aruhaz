@@ -63,6 +63,12 @@ public class CustomerControllerTest {
         }
     }
     
+    @Test(expected = Exception.class)
+    public void getEntityWithInvalidIndexTest() throws SQLException {
+        int numberOfEntities = customerController.getEntityCount();
+        Assert.assertNotNull(customerController.getEntityByRowIndex(numberOfEntities + 1));
+        
+    }
     
    
 }   
