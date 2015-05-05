@@ -66,7 +66,6 @@ public class CategoryControllerTest {
     public void getEntityWithInvalidIndexTest() throws SQLException {
         int numberOfEntities = categoryController.getEntityCount();
         Assert.assertNotNull(categoryController.getEntityByRowIndex(numberOfEntities));
-
     }
 
 }
