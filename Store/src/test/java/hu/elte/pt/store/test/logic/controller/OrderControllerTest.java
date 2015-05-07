@@ -8,7 +8,9 @@ package hu.elte.pt.store.test.logic.controller;
 
 
 import hu.elte.pt.store.logic.controllers.OrderController;
+import hu.elte.pt.store.logic.entities.Order;
 import java.sql.SQLException;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 /**
@@ -41,5 +43,18 @@ public class OrderControllerTest {
       orderController.deleteEntity(orderController.getEntityCount() + 1); 
     }
     
+    
+    
+    @Test
+    public void entityPropertiesTest() throws SQLException {
+        List<Order> orders = orderController.getEntities();
+        
+        for(Order order : orders){
+            Assert.assertNotNull(order.getOrderID());
+            Assert.assertNotNull(order.getCustomer());
+            Assert.assertNotNull(order.getProduct());
+        }     
+        
+    }
     
 }
