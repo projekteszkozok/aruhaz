@@ -34,4 +34,12 @@ public class OrderControllerTest {
       Assert.assertEquals(initialNumberOfCustomers, orderController.getEntityCount());          
          
     }
+    
+    
+    @Test(expected = Exception.class)
+    public void removeWithInvalidIndexTest() throws SQLException {
+      orderController.deleteEntity(orderController.getEntityCount() + 1); 
+    }
+    
+    
 }
