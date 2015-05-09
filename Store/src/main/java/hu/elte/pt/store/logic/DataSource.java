@@ -24,10 +24,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * Singleton pattern szerint elkészített osztály, mely az adatbázis kapcsolat és az entitásokhoz tartozó controllerek lekérésére szolgál.
  * @author Nagy Krisztián
+ * @version 1.%I%
  */
 public class DataSource {
-    
+    /**
+     * A spring segítségével injektált adatbázis kapcsolati adatokat tároló konténer referenciáját tartalmazó mező.
+     */
     private final StoreConfiguration config;
+    /**
+     * Naplózást elősegítő mező
+     */
     private static final Logger log = Logger.getLogger(DataSource.class);
     
     private final CategoryController categoryController;

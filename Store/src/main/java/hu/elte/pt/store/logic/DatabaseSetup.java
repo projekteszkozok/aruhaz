@@ -9,13 +9,22 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 /**
- * Az osztály-t felhasználva létrehozhatjuk az adatbázisban a Dummy táblákat és feltölthetjük adatokkal a mellékelt dummy.sql fájlból.
+ * Az osztály-t felhasználva létrehozhatjuk az adatbázisban a táblákat és feltölthetjük minta adatokkal a mellékelt dummy.sql fájlból.
  * @author Nagy Krisztián
+ * @version 1.%I%
  */
 public class DatabaseSetup {
-    
+    /**
+     * Naplózást elősegítő mező
+     */
     private static final Logger log = Logger.getLogger(DatabaseSetup.class);
     
+    /**
+     * Főprogram, mely lehetővé teszi egy .sql fájl feldolgozását és a benne található nem select-el kezdődő műveletek végrehajtását.
+     * @param args parancssori argumentum tömb
+     * @throws SQLException sikertelen adatbázisművelet végrehajtása során keletkező kivétel
+     * @see java.sql.SQLException
+     */
     public static void main(String[] args) throws SQLException{
         try (
                 Scanner scanner = new Scanner(new File("src/main/resources/dummy.sql"));

@@ -13,12 +13,30 @@ import org.apache.log4j.Logger;
 /**
  * A Category táblán való műveletek végrehajtásáért felelős controller osztály.
  * @author Nagy Krisztián
+ * @version 0.%I%
  */
 public class CategoryController implements EntityController<Category>{
+    /**
+     * Naplózás elősegítésére szolgáló mező
+     */
     private static final Logger log = Logger.getLogger(CategoryController.class);
+    /**
+     * Az adatbázis tábla nevét tároló mező
+     */
     private final String TABLE_NAME = "CATEGORY";
+    /**
+     * Az aktuális adattáblára vonatkozó kilistázási lekérdezést tartalmazó mező
+     */
     private final String FULL_SELECT_SQL = "SELECT * FROM " + TABLE_NAME;
     
+    /**
+     * Azonosító alapján történő lekérdezés megvalósítása a Category táblára nézve.
+     * @param entityId az entitás azonosítója
+     * @return az adott azonosítóval rendelkező kategória.
+     * @throws java.sql.SQLException a keresési eredmények lekérdezése során fellépő hiba.
+     * @see EntityController#getEntityById(int)
+     * @see java.sql.SQLException
+     */
     @Override
     public Category getEntityById(int entityId) throws SQLException {
         Category category = new Category();
@@ -37,6 +55,14 @@ public class CategoryController implements EntityController<Category>{
         return category;        
     }
 
+    /**
+     * Sor index alapján történő lekérdezés megvalósítása a Category táblára nézve.
+     * @param rowIndex sor index
+     * @return az adott sorban található kategória.
+     * @throws SQLException a keresési eredmények lekérdezése során fellépő hiba.
+     * @see EntityController#getEntityByRowIndex(int)
+     * @see java.sql.SQLException
+     */
     @Override
     public Category getEntityByRowIndex(int rowIndex) throws SQLException {
         Category category = new Category();
@@ -55,6 +81,13 @@ public class CategoryController implements EntityController<Category>{
         return category;
     }
 
+    /**
+     * A kategória táblában található sorok számát lekérdező metódus.
+     * @return sorok száma
+     * @throws SQLException a lekérdezés során keletkező kivétel. 
+     * @see EntityController#getEntityCount() 
+     * @see java.sql.SQLException
+     */
     @Override
     public int getEntityCount() throws SQLException {
         int categoryCount = 0;
@@ -72,6 +105,14 @@ public class CategoryController implements EntityController<Category>{
         return categoryCount;        
     }
 
+    /**
+     * Eljárás amely módosítja a táblában található kategóriát a paraméterben kapott értékek alapján.
+     * @param entity a módosult kategóriát tároló objektum
+     * @param rowIndex a sorindex, ahol megtalálható
+     * @throws SQLException a módosító utasítás futtatása során keletkezett kivétel
+     * @see EntityController#updateEntity(hu.elte.pt.store.logic.entities.Entity, int) 
+     * @see java.sql.SQLException
+     */
     @Override
     public void updateEntity(Category entity, final int rowIndex) throws SQLException {
         try (
@@ -89,6 +130,13 @@ public class CategoryController implements EntityController<Category>{
         }
     }
 
+    /**
+     * Új kategória hozzáadását elősegítő metódus, mely visszaadja annak a sornak az indexét, ahova az új kategória be lett szúrva.
+     * @return beszúrt kategória sor indexe
+     * @throws SQLException a beszúrás során keletkező kivétel
+     * @see EntityController#addNewEntity()
+     * @see java.sql.SQLException
+     */
     @Override
     public int addNewEntity() throws SQLException {
         String title = "<új kategória neve>";
@@ -114,7 +162,14 @@ public class CategoryController implements EntityController<Category>{
         }
                 
     }
-
+   
+    /**
+     * Egy meglévő kategória törlését elősegítő eljárás, mely a kapott sorindex alapján kitörli az adott sort az adatbázisból.
+     * @param rowIndex sor index
+     * @throws SQLException Amennyiben nem található adott sorindexű elem, vagy a törlés sikertelen volt.
+     * @see EntityController#deleteEntity(int)
+     * @see java.sql.SQLException
+     */
     @Override
     public void deleteEntity(int rowIndex) throws SQLException {
         try (
@@ -130,6 +185,13 @@ public class CategoryController implements EntityController<Category>{
         }
     }
 
+    /**
+     * Metódus, amely visszaadja az adatbázisban található kategóriákat egy listában.
+     * @return kategóriák egy listában
+     * @throws SQLException sikertelen lekérdezés esetén
+     * @see EntityController#getEntities() 
+     * @see java.sql.SQLException
+     */
     @Override
     public List<Category> getEntities() throws SQLException {
         List<Category> categories = new ArrayList<>();
