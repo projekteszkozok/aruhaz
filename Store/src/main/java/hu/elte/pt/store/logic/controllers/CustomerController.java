@@ -123,10 +123,10 @@ public class CustomerController implements EntityController<Customer> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
             resultSet.updateInt("CUSTOMER_ID", DataSource.getInstance().obtainNewId());
-            resultSet.updateString("NAME", "NAME");
-            resultSet.updateString("ADDRESS", "ADDRESS");
-            resultSet.updateString("TELEPHONE", "TELEPHONE");
-            resultSet.updateString("EMAIL", "EMAIL");
+            resultSet.updateString("NAME", "<új vevő neve>");
+            resultSet.updateString("ADDRESS", "<cím>");
+            resultSet.updateString("TELEPHONE", "<telefonszám>");
+            resultSet.updateString("EMAIL", "<email>");
             resultSet.insertRow();
             log.info("Az új vásárló létrehozása sikeres volt.");
         } catch (SQLException ex) {

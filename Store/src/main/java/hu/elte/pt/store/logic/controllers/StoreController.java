@@ -113,8 +113,8 @@ public class StoreController implements EntityController<Store> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
             resultSet.updateInt(1, DataSource.getInstance().obtainNewId());
-            resultSet.updateString(2, "NAME");
-            resultSet.updateString(3, "PLACE");
+            resultSet.updateString(2, "<új raktár neve>");
+            resultSet.updateString(3, "<telephely>");
             resultSet.insertRow();
             log.info("Az új gyártó létrehozása sikeres volt.");
         } catch (SQLException ex) {

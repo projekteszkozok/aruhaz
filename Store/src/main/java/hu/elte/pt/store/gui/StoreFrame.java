@@ -29,6 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableCellRenderer;
@@ -137,7 +139,7 @@ public class StoreFrame extends JFrame{
         setCellEditorListener(categoryTable, categoryTableModel);        
         
         jTabbedPane.add("Rendelés", new JScrollPane(orderTable));
-        jTabbedPane.add("Bolt", new JScrollPane(storeTable));
+        jTabbedPane.add("Raktár", new JScrollPane(storeTable));
         jTabbedPane.add("Vásárló", new JScrollPane(customerTable));
         jTabbedPane.add("Termék", new JScrollPane(productTable));
         jTabbedPane.add("Gyártó", new JScrollPane(manufacturerTable));
@@ -288,7 +290,7 @@ public class StoreFrame extends JFrame{
             orderMenu.add(newOrderAction);
             orderMenu.add(deleteOrderAction);
             
-            storeMenu = new JMenu("Bolt");
+            storeMenu = new JMenu("Raktár");
             storeMenu.add(newStoreAction);
             storeMenu.add(deleteStoreAction);
             
@@ -306,10 +308,7 @@ public class StoreFrame extends JFrame{
             
             categoryMenu = new JMenu("Kategória");
             categoryMenu.add(newCategoryAction);
-            categoryMenu.add(deleteCategoryAction);
-            
-
-            
+            categoryMenu.add(deleteCategoryAction); 
         }
         
         @Override
@@ -320,7 +319,7 @@ public class StoreFrame extends JFrame{
                 case "Rendelés":
                     add(orderMenu);
                     break;
-                case "Bolt":
+                case "Raktár":
                     add(storeMenu);
                     break; 
                 case "Vásárló":
@@ -335,10 +334,7 @@ public class StoreFrame extends JFrame{
                 case "Kategória":
                     add(categoryMenu);
                     break;
-
             }
-
         }
-    
     }
 }
