@@ -73,6 +73,16 @@ public class StoreFrame extends JFrame{
         setSize(600,400);
         setLocationRelativeTo(null);
         
+        try {
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+        }         
+        
         StoreMenuBar menuBar = new StoreMenuBar();
         setJMenuBar(menuBar);
         
@@ -109,10 +119,10 @@ public class StoreFrame extends JFrame{
                 int modelRow = productTable.convertRowIndexToModel(row);
                 boolean available = (Boolean) productTableModel.getValueAt(modelRow, 6);
                 if (!available) {
-                    component.setBackground(Color.ORANGE);
+                    component.setBackground(new Color(255,229,204));
                     component.setForeground(Color.GRAY);
                 } else {
-                    component.setBackground(Color.GREEN);
+                    component.setBackground(Color.WHITE);
                     component.setForeground(Color.BLACK);
                 }
                 return component;
