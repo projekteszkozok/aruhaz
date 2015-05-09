@@ -34,7 +34,7 @@ public class CustomerController implements EntityController<Customer> {
             customer.setAddress(resultSet.getString(3));
             customer.setTelephone(resultSet.getString(4));
             customer.setEmail(resultSet.getString(5));
-            log.info("A táblában az azonosító alapján történő keresés sikeres volt. "
+            log.debug("A táblában az azonosító alapján történő keresés sikeres volt. "
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "                   
                     + resultSet.getString(2) + " "
@@ -63,7 +63,7 @@ public class CustomerController implements EntityController<Customer> {
             customer.setTelephone(resultSet.getString(4));
             customer.setEmail(resultSet.getString(5));
 
-            log.info("A táblában a sorindex alapján történő keresés sikeres volt."
+            log.debug("A táblában a sorindex alapján történő keresés sikeres volt."
                     + "ResultSet: "
                     + resultSet.getInt(1) + " "                 
                     + resultSet.getString(2) + " "

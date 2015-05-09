@@ -9,10 +9,15 @@ import hu.elte.pt.store.gui.tablemodels.OrderTableModel;
 import hu.elte.pt.store.gui.tablemodels.ProductTableModel;
 import hu.elte.pt.store.gui.tablemodels.StoreTableModel;
 import hu.elte.pt.store.logic.DataSource;
+import hu.elte.pt.store.util.ImageReader;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,12 +25,14 @@ import java.util.Enumeration;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -58,6 +65,27 @@ public class StoreFrame extends JFrame{
     private final ProductTableModel productTableModel;
     private final OrderTableModel orderTableModel;
     
+    private static ImageIcon aboutImage;
+    private static ImageIcon aboutInfoImage;
+    private static ImageIcon editorAddImage;
+    private static ImageIcon editorDeleteImage;
+    
+    static{
+        try {
+            //System.out.println("images" + File.separator + "about.png");
+            final BufferedImage aboutBufferedImage = ImageReader.readImage("images" + File.separator + "about.png");
+            aboutImage = new ImageIcon(aboutBufferedImage);
+            final BufferedImage aboutInfoBufferedImage = ImageReader.readImage("images" + File.separator + "about_i.png");
+            aboutInfoImage = new ImageIcon(aboutInfoBufferedImage);
+            final BufferedImage editorAddBufferedImage = ImageReader.readImage("images" + File.separator + "add.png");
+            editorAddImage = new ImageIcon(editorAddBufferedImage);
+            final BufferedImage editorDeleteBufferedImage = ImageReader.readImage("images" + File.separator + "delete.png");
+            editorDeleteImage = new ImageIcon(editorDeleteBufferedImage);
+        } catch (IOException ex) {
+            log.error("A programban használt képek betöltése során probléma lépett fel.", ex);
+        }
+    }
+    
     public StoreFrame(){
         try {
             DataSource.getInstance().getConnection().close();
@@ -81,6 +109,7 @@ public class StoreFrame extends JFrame{
                 }
             }
         } catch (Exception e) {
+            log.warn("A Nimbus téma betöltése sikertelen volt!", e);
         }         
         
         StoreMenuBar menuBar = new StoreMenuBar();
@@ -148,13 +177,13 @@ public class StoreFrame extends JFrame{
         categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setCellEditorListener(categoryTable, categoryTableModel);        
         
-        jTabbedPane.add("Rendelés", new JScrollPane(orderTable));
-        jTabbedPane.add("Raktár", new JScrollPane(storeTable));
-        jTabbedPane.add("Vásárló", new JScrollPane(customerTable));
-        jTabbedPane.add("Termék", new JScrollPane(productTable));
-        jTabbedPane.add("Gyártó", new JScrollPane(manufacturerTable));
-        jTabbedPane.add("Kategória", new JScrollPane(categoryTable));     
-        
+        jTabbedPane.addTab("Rendelés", new JScrollPane(orderTable));
+        jTabbedPane.addTab("Raktár", new JScrollPane(storeTable));
+        jTabbedPane.addTab("Vásárló", new JScrollPane(customerTable));
+        jTabbedPane.addTab("Termék", new JScrollPane(productTable));
+        jTabbedPane.addTab("Gyártó", new JScrollPane(manufacturerTable));
+        jTabbedPane.addTab("Kategória", new JScrollPane(categoryTable));    
+     
     }
     
     private void setCellEditorListener(final JTable table, final EntityHandlerTableModel tableModel){
@@ -290,35 +319,35 @@ public class StoreFrame extends JFrame{
         }
     }    
     
+    private final Action aboutAction = new AbstractAction("Névjegy"){
+        @Override
+        public void actionPerformed(ActionEvent e) {          
+            JOptionPane.showMessageDialog(null, "Áruház v1.0\n\nKészítették:\n\tNagy Krisztián\n\tHolló Eszter\n\tHonti Dóra Kármen\n\tDudás Orsolya\n\tCseh Zoltán\n\tBojtos Csaba\n", "Névjegy", JOptionPane.INFORMATION_MESSAGE, aboutImage);
+        }
+        
+    };
+    
     private class StoreMenuBar extends JMenuBar implements ChangeListener{
         
-        private final JMenu orderMenu, storeMenu, customerMenu, productMenu, manufacturerMenu, categoryMenu;
+        private final JMenuItem aboutItem;
+        private final JMenuItem orderAdd, orderDelete, storeAdd, storeDelete, customerAdd, customerDelete, productAdd, productDelete, manuAdd, manuDelete, catAdd, catDelete;
         
         public StoreMenuBar(){
             
-            orderMenu = new JMenu("Rendelés");
-            orderMenu.add(newOrderAction);
-            orderMenu.add(deleteOrderAction);
+            orderAdd = createMenuItem("Rendelés hozzáadása", editorAddImage, newOrderAction);
+            orderDelete = createMenuItem("Rendelés törlése", editorDeleteImage, deleteOrderAction);
+            storeAdd = createMenuItem("Bolt hozzáadása", editorAddImage, newStoreAction);
+            storeDelete = createMenuItem("Bolt törlése", editorDeleteImage, deleteStoreAction);
+            customerAdd = createMenuItem("Vásárló hozzáadása", editorAddImage, newCustomerAction);
+            customerDelete = createMenuItem("Vásárló törlése", editorDeleteImage, deleteCustomerAction);
+            productAdd = createMenuItem("Termék hozzáadása", editorAddImage, newProductAction);
+            productDelete = createMenuItem("Termék törlése", editorDeleteImage, deleteProductAction);
+            manuAdd = createMenuItem("Gyártó hozzáadása", editorAddImage, newManufacturerAction);
+            manuDelete = createMenuItem("Gyártó törlése", editorDeleteImage, deleteManufacturerAction);
+            catAdd = createMenuItem("Kategória hozzáadása", editorAddImage, newCategoryAction);
+            catDelete = createMenuItem("Kategória törlése", editorDeleteImage, deleteCategoryAction);
             
-            storeMenu = new JMenu("Raktár");
-            storeMenu.add(newStoreAction);
-            storeMenu.add(deleteStoreAction);
-            
-            customerMenu = new JMenu("Vásárló");
-            customerMenu.add(newCustomerAction);
-            customerMenu.add(deleteCustomerAction);
-            
-            productMenu = new JMenu("Termék");
-            productMenu.add(newProductAction);
-            productMenu.add(deleteProductAction);
-            
-            manufacturerMenu = new JMenu("Gyártó");
-            manufacturerMenu.add(newManufacturerAction);
-            manufacturerMenu.add(deleteManufacturerAction);
-            
-            categoryMenu = new JMenu("Kategória");
-            categoryMenu.add(newCategoryAction);
-            categoryMenu.add(deleteCategoryAction); 
+            aboutItem = createMenuItem("Névjegy", aboutInfoImage, aboutAction);
         }
         
         @Override
@@ -327,24 +356,54 @@ public class StoreFrame extends JFrame{
             repaint();
             switch (jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex())) {
                 case "Rendelés":
-                    add(orderMenu);
+                    add(orderAdd);
+                    add(new JSeparator(JSeparator.VERTICAL));
+                    add(orderDelete);
+                    add(new JSeparator(JSeparator.VERTICAL));
                     break;
                 case "Raktár":
-                    add(storeMenu);
-                    break; 
+                    add(storeAdd);
+                    add(new JSeparator(JSeparator.VERTICAL));
+                    add(storeDelete);
+                    add(new JSeparator(JSeparator.VERTICAL));
+                    break;
                 case "Vásárló":
-                    add(customerMenu);
+                    add(customerAdd);
+                    add(new JSeparator(JSeparator.VERTICAL));
+                    add(customerDelete);
+                    add(new JSeparator(JSeparator.VERTICAL));
                     break;
                 case "Termék":
-                    add(productMenu);
+                    add(productAdd);
+                    add(new JSeparator(JSeparator.VERTICAL));
+                    add(productDelete);
+                    add(new JSeparator(JSeparator.VERTICAL));
                     break;
                 case "Gyártó":
-                    add(manufacturerMenu);
+                    add(manuAdd);
+                    add(new JSeparator(JSeparator.VERTICAL));
+                    add(manuDelete);
+                    add(new JSeparator(JSeparator.VERTICAL));
                     break;
                 case "Kategória":
-                    add(categoryMenu);
+                    add(catAdd);
+                    add(new JSeparator(JSeparator.VERTICAL));
+                    add(catDelete);
+                    add(new JSeparator(JSeparator.VERTICAL));
                     break;
             }
+            
+            add(aboutItem);
+            add(new JSeparator(JSeparator.VERTICAL));
+            
+        }
+        
+        private JMenuItem createMenuItem(String menuName, final ImageIcon icon, final Action action){
+            final JMenuItem item = new JMenuItem(menuName);
+            item.setAction(action);
+            if(icon != null) item.setIcon(icon);
+            item.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            return item;
         }
     }
 }
