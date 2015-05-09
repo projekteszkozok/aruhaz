@@ -97,7 +97,7 @@ public class Customer implements Entity {
 
     @Override
     public String toString() {
-        return "Customer{" + "name=" + name + '}';
+        return getName();
     }
 
    

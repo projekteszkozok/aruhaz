@@ -67,7 +67,7 @@ public class StoreFrame extends JFrame{
             System.exit(1);        
         }
         
-        setTitle("Store");
+        setTitle("Áruház");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setSize(600,400);
@@ -84,8 +84,8 @@ public class StoreFrame extends JFrame{
         orderTable = new JTable(orderTableModel);
         orderTable.setAutoCreateRowSorter(true);
         orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //orderTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getProductController()))));
-        //orderTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getCustomerController())))); 
+        orderTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getProductController()))));
+        orderTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getCustomerController())))); 
         setCellEditorListener(orderTable, orderTableModel);
         
         storeTableModel = new StoreTableModel();
