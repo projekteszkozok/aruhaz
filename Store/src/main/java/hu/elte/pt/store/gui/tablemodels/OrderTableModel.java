@@ -105,8 +105,10 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
         switch (columnIndex) {
             case 0:
                 order.setProduct((Product) aValue);
+                break;
             case 1:
                 order.setCustomer((Customer) aValue);
+                break;
         }
 
         new SwingWorker<Void, Void>() {

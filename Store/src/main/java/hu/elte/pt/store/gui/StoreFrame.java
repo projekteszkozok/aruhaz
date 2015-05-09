@@ -82,6 +82,8 @@ public class StoreFrame extends JFrame{
         orderTable = new JTable(orderTableModel);
         orderTable.setAutoCreateRowSorter(true);
         orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //orderTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getProductController()))));
+        //orderTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JComboBox(new EntityComboBoxModel(DataSource.getInstance().getCustomerController())))); 
         setCellEditorListener(orderTable, orderTableModel);
         
         storeTableModel = new StoreTableModel();

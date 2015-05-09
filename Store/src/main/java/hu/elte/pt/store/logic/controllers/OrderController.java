@@ -104,7 +104,7 @@ public class OrderController implements EntityController<Order> {
         order.setProduct(product);
         return order;
     }
-    //OK
+ 
     @Override
     public int getEntityCount() throws SQLException {
         int orderCount = 0;
@@ -151,6 +151,10 @@ public class OrderController implements EntityController<Order> {
 
     @Override
     public int addNewEntity() throws SQLException {
+        
+        if(DataSource.getInstance().getProductController().getEntityCount() < 1) throw new SQLException("Nincsen termék felvéve!");
+        if(DataSource.getInstance().getCustomerController().getEntityCount() < 1) throw new SQLException("Nincsen vásárló felvéve!");
+        
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
