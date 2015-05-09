@@ -161,7 +161,7 @@ public class ProductController implements EntityController<Product> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
             resultSet.updateInt("PRODUCT_ID", DataSource.getInstance().obtainNewId());
-            resultSet.updateString("NAME", "<új termék>");
+            resultSet.updateString("NAME", "<új termék neve>");
             resultSet.updateInt("MANUFACTURER_ID", DataSource.getInstance().getManufacturers().get(0).getManufacturerId());
             resultSet.updateString("DESCRIPTION", "<leírás>");
             resultSet.updateInt("CATEGORY_ID", DataSource.getInstance().getCategories().get(0).getCategoryId());

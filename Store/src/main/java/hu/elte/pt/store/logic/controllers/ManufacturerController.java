@@ -143,10 +143,10 @@ public class ManufacturerController implements EntityController<Manufacturer> {
                 ResultSet resultSet = statement.executeQuery(FULL_SELECT_SQL);) {
             resultSet.moveToInsertRow();
             resultSet.updateInt("MANUFACTURER_ID", DataSource.getInstance().obtainNewId());
-            resultSet.updateString("NAME", "NAME");
-            resultSet.updateString("CONTACT_NAME", "CONTACT_NAME");
-            resultSet.updateString("CITY", "CITY");
-            resultSet.updateString("TELEPHONE", "TELEPHONE");
+            resultSet.updateString("NAME", "<új gyártó neve>");
+            resultSet.updateString("CONTACT_NAME", "<kapcsolattartó");
+            resultSet.updateString("CITY", "<telephely>");
+            resultSet.updateString("TELEPHONE", "<telefonszám>");
             resultSet.updateInt("STORE_ID", DataSource.getInstance().getStores().get(0).getStoreId());
             resultSet.insertRow();
             log.info("Az új gyártó létrehozása sikeres volt.");

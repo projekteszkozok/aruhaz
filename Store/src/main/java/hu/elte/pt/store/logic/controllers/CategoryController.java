@@ -91,7 +91,7 @@ public class CategoryController implements EntityController<Category>{
 
     @Override
     public int addNewEntity() throws SQLException {
-        String title = "<new category>";
+        String title = "<új kategória neve>";
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
