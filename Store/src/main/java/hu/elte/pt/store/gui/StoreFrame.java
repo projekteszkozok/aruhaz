@@ -183,7 +183,7 @@ public class StoreFrame extends JFrame{
         jTabbedPane.addTab("Termék", new JScrollPane(productTable));
         jTabbedPane.addTab("Gyártó", new JScrollPane(manufacturerTable));
         jTabbedPane.addTab("Kategória", new JScrollPane(categoryTable));    
-     
+             
     }
     
     private void setCellEditorListener(final JTable table, final EntityHandlerTableModel tableModel){

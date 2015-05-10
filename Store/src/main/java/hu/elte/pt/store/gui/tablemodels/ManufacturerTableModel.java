@@ -70,7 +70,7 @@ public class ManufacturerTableModel extends AbstractTableModel implements Entity
             case 3:
                 return getManufacturerAtRow(rowIndex).getPhone();
             case 4:
-                return getManufacturerAtRow(rowIndex).getStore().getName();
+                return getManufacturerAtRow(rowIndex).getStore();
             default:
                 return null;
         }

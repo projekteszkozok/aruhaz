@@ -10,13 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import javax.swing.MutableComboBoxModel;
 import javax.swing.SwingWorker;
 /**
  *
  * @author Nagy Krisztián
  * @param <E> Entitás, mely implementálja az Entity interfész-t
  */
-public class EntityComboBoxModel<E extends Entity> extends DefaultComboBoxModel<E> {
+public class EntityComboBoxModel<E extends Entity> extends DefaultComboBoxModel<E> implements MutableComboBoxModel<E>{
     private List<E> entities;
     private final int refreshInterval;
     private final Timer refreshTimer;
@@ -65,7 +66,7 @@ public class EntityComboBoxModel<E extends Entity> extends DefaultComboBoxModel<
             protected void done() {
                 try {
                     entities = get();
-                    fireContentsChanged(this, 0, getSize());
+                    fireContentsChanged(this, -1, getSize());
                 } catch (InterruptedException | ExecutionException ex) {
                     StoreFrame.displayError("Kivétel keletkezett a kiválasztás során!");
                 }

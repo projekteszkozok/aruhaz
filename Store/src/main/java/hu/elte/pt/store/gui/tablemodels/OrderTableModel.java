@@ -63,9 +63,9 @@ public class OrderTableModel extends AbstractTableModel implements EntityHandler
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return getOrderAtRow(rowIndex).getProduct().getProductName();
+                return getOrderAtRow(rowIndex).getProduct();
             case 1:
-                return getOrderAtRow(rowIndex).getCustomer().getName();
+                return getOrderAtRow(rowIndex).getCustomer();
                 
             default:
                 return null;

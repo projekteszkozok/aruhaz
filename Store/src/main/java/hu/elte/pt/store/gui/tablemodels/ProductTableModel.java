@@ -150,11 +150,11 @@ public class ProductTableModel extends AbstractTableModel implements EntityHandl
             case 0:
                 return getProductAtRow(rowIndex).getProductName();
             case 1:
-                return getProductAtRow(rowIndex).getManufacturer().getName();
+                return getProductAtRow(rowIndex).getManufacturer();
             case 2:
                 return getProductAtRow(rowIndex).getDescription();
             case 3:
-                return getProductAtRow(rowIndex).getCategory().getName();
+                return getProductAtRow(rowIndex).getCategory();
             case 4:
                 return getProductAtRow(rowIndex).getPrice();
             case 5:
