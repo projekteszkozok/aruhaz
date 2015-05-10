@@ -28,9 +28,6 @@ public class ProductController implements EntityController<Product> {
         Product product = new Product();
         int manufacturerID;
         int categoryID;
-        if (DataSource.getInstance().getManufacturerController().getEntityCount() < 1 || DataSource.getInstance().getCategoryController().getEntityCount() < 1) {
-            throw new SQLException("Nem található idegen entitás");
-        }
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement();
@@ -74,9 +71,6 @@ public class ProductController implements EntityController<Product> {
         Product product = new Product();
         int manufacturerID;
         int categoryID;
-        if (DataSource.getInstance().getManufacturerController().getEntityCount() < 1 || DataSource.getInstance().getCategoryController().getEntityCount() < 1) {
-            throw new SQLException("Nem található idegen entitás");
-        }
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -213,9 +207,6 @@ public class ProductController implements EntityController<Product> {
         List<Product> products = new ArrayList<>();
         int manufacturerID;
         int categoryID;
-        if (DataSource.getInstance().getManufacturerController().getEntityCount() < 1 || DataSource.getInstance().getCategoryController().getEntityCount() < 1) {
-            throw new SQLException("Nem található idegen entitás");
-        }
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement stmt = connection.createStatement();
