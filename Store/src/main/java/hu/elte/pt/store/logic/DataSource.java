@@ -24,7 +24,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * Singleton pattern szerint elkészített osztály, mely az adatbázis kapcsolat és az entitásokhoz tartozó controllerek lekérésére szolgál.
  * @author Nagy Krisztián
- * @version 1.%I%
+ * @version 1.0
  */
 public class DataSource {
     /**
@@ -36,13 +36,34 @@ public class DataSource {
      */
     private static final Logger log = Logger.getLogger(DataSource.class);
     
+    /**
+     * A kategória kontrollerének referenciáját tároló mező
+     */
     private final CategoryController categoryController;
+    /**
+     * A gyártó kontrollerének referenciáját tároló mező
+     */
     private final ManufacturerController manufacturerController;
-    private final CustomerController customerController;    
+    /**
+     * A vásárló kontrollerének referenciáját tároló mező
+     */
+    private final CustomerController customerController; 
+    /**
+     * A bolt kontrollerének referenciáját tároló mező
+     */
     private final StoreController storeController;
+    /**
+     * A termék kontrollerének referenciáját tároló mező
+     */
     private final ProductController productController;
+    /**
+     * A rendelés kontrollerének referenciáját tároló mező
+     */
     private final OrderController orderController;
     
+    /**
+     * A DataSource konstruktora. Mivel egyszerre csak egy példány létezhet belőle, így kívülről nem látható.
+     */
     private DataSource(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("store-config.xml");
         config = (StoreConfiguration) context.getBean("StoreConfiguration");
@@ -61,42 +82,91 @@ public class DataSource {
         orderController = new OrderController();
     }
     
+    /**
+     * Az adatbázis kapcsolat elérését bisztosító metódus
+     * @return az adatbázis kapcsolat objektuma.
+     * @throws SQLException kapcsolat létrehozása során keletkező kivétel.
+     * @see java.sql.Connection
+     * @see java.sql.SQLException
+     */
     public Connection getConnection() throws SQLException{
         return DriverManager.getConnection(config.getConnectionString(), config.getUserName(), config.getPassword());
     }
 
+    /**
+     * A kategória kontrollerének elkérését elősegítő metódus
+     * @return a kategória kontrollere
+     * @see hu.elte.pt.store.logic.controllers.CategoryController
+     */
     public CategoryController getCategoryController() {
         return categoryController;
     }
     
+    /**
+     * A gyártó kontrollerének elkérését elősegítő metódus
+     * @return a gyártó kontrollere
+     * @see hu.elte.pt.store.logic.controllers.ManufacturerController
+     */
     public ManufacturerController getManufacturerController() {
         return manufacturerController;
     }
     
+     /**
+     * A vásárló kontrollerének elkérését elősegítő metódus
+     * @return a vásárló kontrollere
+     * @see hu.elte.pt.store.logic.controllers.CustomerController
+     */   
     public CustomerController getCustomerController() {
         return customerController;
     }
     
+    /**
+     * A bolt kontrollerének elkérését elősegítő metódus
+     * @return a bolt kontrollere
+     * @see hu.elte.pt.store.logic.controllers.StoreController
+     */
     public StoreController getStoreController() {
         return storeController;
     }
-    
+
+    /**
+     * A termék kontrollerének elkérését elősegítő metódus
+     * @return a termék kontrollere
+     * @see hu.elte.pt.store.logic.controllers.ProductController
+     */
     public ProductController getProductController() {
         return productController;
     }
-    
+
+    /**
+     * A rendelés kontrollerének elkérését elősegítő metódus
+     * @return a rendelés kontrollere
+     * @see hu.elte.pt.store.logic.controllers.OrderController
+     */    
     public OrderController getOrderController(){
         return orderController;
     }
-    
+
+    /**
+     * A DataSource egyetlen példányának elkérését elősegítő metódus
+     * @return DataSource példány
+     */    
     public static DataSource getInstance(){
         return DataSourceHolder.INSTANCE;
     }
     
+    /**
+     * Segédosztály, amely elősegíti, hogy egyetlen példány létezzen egy időben a DataSource-ból.
+     */
     private static class DataSourceHolder{
         private static final DataSource INSTANCE = new DataSource();
     }
     
+    /**
+     * Azonosító generálását lehetővétevő metódus, mely egy soron következő azonosítót ad az adatbázisban felhasznált adatok alapján, ezzel biztosítva az azonosító egyediségét.
+     * @return egyedi azonosító
+     * @throws SQLException sikertelen adatbázis lekérdezés során kiváltódó kivétel
+     */
     public int obtainNewId() throws SQLException {
         int id;
         try (
@@ -111,20 +181,40 @@ public class DataSource {
         return id;
     }
     
-    //Category
+    /**
+     * Kategória kilistázásának metódusa
+     * @return kategória entitásokat tartalmazó lista
+     * @throws SQLException lekérdezés során kiváltodó kivétel
+     */
     public List<Category> getCategories() throws SQLException {
         return categoryController.getEntities();
     }    
     
+    /**
+     * Új kategória hozzáadását elősegítő metódus
+     * @return az újonnan beszúrt kategória sorának indexe
+     * @throws SQLException a művelet végrehajtása során keletkező kivétel
+     */
     public int addCategory() throws SQLException{
         categoryController.addNewEntity();
         return getCategories().size() - 1;
     }
     
+    /**
+     * Egy kategória törlését elősegítő metódus
+     * @param index a kategória sor indexe
+     * @throws SQLException a törlés során kiváltódó kivétel
+     */
     public void deleteCategory(int index) throws SQLException{
         categoryController.deleteEntity(index);
     }
     
+    /**
+     * Egy kategória módosítását elősegítő metódus
+     * @param category módosított kategória
+     * @param rowIndex a módosított kategória sorindexe
+     * @throws SQLException módosítás során kiváltódó kivétel
+     */
     public void updateCategory(final Category category, final int rowIndex) throws SQLException{
         categoryController.updateEntity(category, rowIndex);
     }

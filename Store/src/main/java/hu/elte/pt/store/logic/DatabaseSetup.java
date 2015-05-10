@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 /**
  * Az osztály-t felhasználva létrehozhatjuk az adatbázisban a táblákat és feltölthetjük minta adatokkal a mellékelt dummy.sql fájlból.
  * @author Nagy Krisztián
- * @version 1.%I%
+ * @version 1.0
  */
 public class DatabaseSetup {
     /**

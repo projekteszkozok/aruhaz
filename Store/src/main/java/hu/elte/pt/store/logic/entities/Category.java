@@ -6,7 +6,7 @@ import java.util.Objects;
  * A Category tábla Java-s megfelelője.
  *
  * @author Nagy Krisztián
- * @version 0.%I%
+ * @version 1.0
  */
 public class Category implements Entity {
 

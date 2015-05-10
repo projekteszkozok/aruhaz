@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 /**
  * A Category táblán való műveletek végrehajtásáért felelős controller osztály.
  * @author Nagy Krisztián
- * @version 0.%I%
+ * @version 1.0
  */
 public class CategoryController implements EntityController<Category>{
     /**

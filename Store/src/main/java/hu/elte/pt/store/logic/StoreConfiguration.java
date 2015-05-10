@@ -3,7 +3,7 @@ package hu.elte.pt.store.logic;
 /**
  * Egy olyan osztály, melynek egy példányába a Spring Framework segítségével bekerülnek az adatbázis kapcsolat megfelelő adatai 
  * @author Nagy Krisztián
- * @version 1.%I%
+ * @version 1.0
  */
 public class StoreConfiguration {
     /**
