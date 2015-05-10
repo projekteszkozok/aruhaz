@@ -161,6 +161,9 @@ public class ProductController implements EntityController<Product> {
 
     @Override
     public int addNewEntity() throws SQLException {
+        if (DataSource.getInstance().getManufacturerController().getEntityCount() < 1 || DataSource.getInstance().getCategoryController().getEntityCount() < 1) {
+            throw new SQLException("Nem található idegen entitás");
+        }
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
