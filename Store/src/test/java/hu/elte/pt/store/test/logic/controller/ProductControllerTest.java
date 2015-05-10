@@ -8,8 +8,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * @author Bojtos Csaba
  *
- * @author Bojtos Csaba Product Controllerhez tartozó tesztek
+ * Product Controllerhez tartozó tesztek
  */
 public class ProductControllerTest {
 
@@ -45,7 +46,6 @@ public class ProductControllerTest {
             Assert.assertNotNull(product.getManufacturer());
             Assert.assertNotNull(product.getPrice());
             Assert.assertNotNull(product.getStock());
-
         }
 
     }
