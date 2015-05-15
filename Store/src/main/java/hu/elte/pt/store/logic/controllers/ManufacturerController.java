@@ -18,10 +18,28 @@ import org.apache.log4j.Logger;
  */
 public class ManufacturerController implements EntityController<Manufacturer> {
 
+    /**
+     * Naplózás elősegítésére szolgáló mező
+     */
     private static final Logger log = Logger.getLogger(ManufacturerController.class);
+    /**
+     * Az adatbázis tábla nevét tároló mező
+     */
     private final String TABLE_NAME = "MANUFACTURER";
+    /**
+     * Az aktuális adattáblára vonatkozó kilistázási lekérdezést tartalmazó mező
+     */
     private final String FULL_SELECT_SQL = "SELECT * FROM " + TABLE_NAME;
 
+    /**
+     * Azonosító alapján történő lekérdezés megvalósítása a Manufacturer táblára nézve
+     *
+     * @param entityId az entitás azonosítója
+     * @return az adott azonosítóval rendelkező gyártó
+     * @throws java.sql.SQLException a keresési eredmények lekérdezése során fellépő hiba
+     * @see EntityManufacturer#getEntityById(int)
+     * @see java.sql.SQLException
+     */
     @Override
     public Manufacturer getEntityById(int entityId) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
@@ -59,6 +77,15 @@ public class ManufacturerController implements EntityController<Manufacturer> {
         return manufacturer;
     }
 
+    /**
+     * Sor index alapján történő lekérdezés megvalósítása a Manufacturer táblára nézve
+     *
+     * @param rowIndex sor index
+     * @return az adott sorban található gyártó
+     * @throws SQLException a keresési eredmények lekérdezése során fellépő hiba.
+     * @see EntityManufacturer#getEntityByRowIndex(int)
+     * @see java.sql.SQLException
+     */
     @Override
     public Manufacturer getEntityByRowIndex(int rowIndex) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
@@ -95,6 +122,14 @@ public class ManufacturerController implements EntityController<Manufacturer> {
         return manufacturer;
     }
 
+    /**
+     * A gyártó táblában található sorok számát lekérdező metódus
+     *
+     * @return sorok száma
+     * @throws SQLException a lekérdezés során keletkező kivétel
+     * @see EntityManufacturer#getEntityCount()
+     * @see java.sql.SQLException
+     */
     @Override
     public int getEntityCount() throws SQLException {
         int manufacturerCount = 0;
@@ -112,6 +147,15 @@ public class ManufacturerController implements EntityController<Manufacturer> {
         return manufacturerCount;
     }
 
+    /**
+     * Eljárás amely módosítja a táblában található gyártókat a paraméterben kapott értékek alapján
+     *
+     * @param entity a módosult gyártót tároló objektum
+     * @param rowIndex a sorindex, ahol megtalálható
+     * @throws SQLException a módosító utasítás futtatása során keletkezett kivétel
+     * @see EntityManufacturer#updateEntity(hu.elte.pt.store.logic.entities.Entity, int)
+     * @see java.sql.SQLException
+     */
     @Override
     public void updateEntity(Manufacturer entity, final int rowIndex) throws SQLException {
         try (
@@ -127,18 +171,28 @@ public class ManufacturerController implements EntityController<Manufacturer> {
             resultSet.updateInt("STORE_ID", entity.getStore().getStoreId());
 
             resultSet.updateRow();
-            
-            log.info("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új név: " + entity.getName() + ", kapcsolattartó: " + entity.getContactName() + ", telephely: " + entity.getCity() + ", telefonszám " + entity.getPhone()+ ", raktár " + entity.getStore().getName() + " lett.");
+
+            log.info("A(z) (" + entity.getManufacturerId() + ") azonosítójú sor sikeresen módosult. Az új név: " + entity.getName() + ", kapcsolattartó: " + entity.getContactName() + ", telephely: " + entity.getCity() + ", telefonszám " + entity.getPhone() + ", raktár " + entity.getStore().getName() + " lett.");
         } catch (SQLException ex) {
             log.error("A táblában található" + entity.getManufacturerId() + " azonosíítóval rendelkező sor módosítása során kivétel keletkezett!", ex);
             throw new SQLException("A táblában található" + entity.getManufacturerId() + " azonosíítóval rendelkező sor módosítása sikertelen volt!");
         }
     }
 
+    /**
+     * Új gyártó hozzáadását elősegítő metódus, mely visszaadja annak a sornak az indexét, ahova az új gyártó be lett szúrva
+     *
+     * @return beszúrt gyártó sor indexe
+     * @throws SQLException a beszúrás során keletkező kivétel
+     * @see EntityManufacturer#addNewEntity()
+     * @see java.sql.SQLException
+     */
     @Override
     public int addNewEntity() throws SQLException {
-        if(DataSource.getInstance().getStoreController().getEntityCount() < 1) throw new SQLException("Nem található raktár!");
-        
+        if (DataSource.getInstance().getStoreController().getEntityCount() < 1) {
+            throw new SQLException("Nem található raktár!");
+        }
+
         try (
                 Connection connection = DataSource.getInstance().getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -166,6 +220,14 @@ public class ManufacturerController implements EntityController<Manufacturer> {
 
     }
 
+    /**
+     * Egy meglévő gyártó törlését elősegítő eljárás, mely a kapott sorindex alapján kitörli az adott sort az adatbázisból
+     *
+     * @param rowIndex sor index
+     * @throws SQLException Amennyiben nem található adott sorindexű elem, vagy a törlés sikertelen volt
+     * @see EntityManufacturer#deleteEntity(int)
+     * @see java.sql.SQLException
+     */
     @Override
     public void deleteEntity(int rowIndex) throws SQLException {
         try (
@@ -181,6 +243,14 @@ public class ManufacturerController implements EntityController<Manufacturer> {
         }
     }
 
+    /**
+     * Metódus, amely visszaadja az adatbázisban található gyártókat egy listában
+     *
+     * @return gyártók egy listában
+     * @throws SQLException sikertelen lekérdezés esetén
+     * @see EntityManufacturer#getEntities()
+     * @see java.sql.SQLException
+     */
     @Override
     public List<Manufacturer> getEntities() throws SQLException {
         List<Manufacturer> manufacturers = new ArrayList<>();
