@@ -37,7 +37,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
      * @param entityId az entitás azonosítója
      * @return az adott azonosítóval rendelkező gyártó
      * @throws java.sql.SQLException a keresési eredmények lekérdezése során fellépő hiba
-     * @see EntityManufacturer#getEntityById(int)
+     * @see EntityController#getEntityById(int)
      * @see java.sql.SQLException
      */
     @Override
@@ -83,7 +83,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
      * @param rowIndex sor index
      * @return az adott sorban található gyártó
      * @throws SQLException a keresési eredmények lekérdezése során fellépő hiba.
-     * @see EntityManufacturer#getEntityByRowIndex(int)
+     * @see EntityController#getEntityByRowIndex(int)
      * @see java.sql.SQLException
      */
     @Override
@@ -127,7 +127,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
      *
      * @return sorok száma
      * @throws SQLException a lekérdezés során keletkező kivétel
-     * @see EntityManufacturer#getEntityCount()
+     * @see EntityController#getEntityCount()
      * @see java.sql.SQLException
      */
     @Override
@@ -153,7 +153,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
      * @param entity a módosult gyártót tároló objektum
      * @param rowIndex a sorindex, ahol megtalálható
      * @throws SQLException a módosító utasítás futtatása során keletkezett kivétel
-     * @see EntityManufacturer#updateEntity(hu.elte.pt.store.logic.entities.Entity, int)
+     * @see EntityController#updateEntity(hu.elte.pt.store.logic.entities.Entity, int)
      * @see java.sql.SQLException
      */
     @Override
@@ -184,7 +184,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
      *
      * @return beszúrt gyártó sor indexe
      * @throws SQLException a beszúrás során keletkező kivétel
-     * @see EntityManufacturer#addNewEntity()
+     * @see EntityController#addNewEntity()
      * @see java.sql.SQLException
      */
     @Override
@@ -225,7 +225,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
      *
      * @param rowIndex sor index
      * @throws SQLException Amennyiben nem található adott sorindexű elem, vagy a törlés sikertelen volt
-     * @see EntityManufacturer#deleteEntity(int)
+     * @see EntityController#deleteEntity(int)
      * @see java.sql.SQLException
      */
     @Override
@@ -248,7 +248,7 @@ public class ManufacturerController implements EntityController<Manufacturer> {
      *
      * @return gyártók egy listában
      * @throws SQLException sikertelen lekérdezés esetén
-     * @see EntityManufacturer#getEntities()
+     * @see EntityController#getEntities()
      * @see java.sql.SQLException
      */
     @Override
